@@ -1,0 +1,38 @@
+:root{
+
+    --border_1: hsl(203, 42%, 50%);
+    --bg_hell: hsl(203, 42%, 29%);
+    --bg_heller: hsl(203, 42%, 19%);
+    --bg_dunkel: hsl(201, 44%, 6%);
+
+
+}
+
+
+@font-face {
+    font-family: 'leelawadee';
+    src: url(./font/leelawad.ttf) format("truetype");
+}
+
+
+*{
+    font-family: 'leelawadee';
+    text-align: center;
+    background-color: var(--bg_dunkel);
+}
+
+
+::selection{
+    color: var(--border_1);
+    background-color: var(--bg_dunkel);
+}
+
+
+h1{
+    color: var(--bg_dunkel);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: var(--border_1);
+    background-color: var(--bg_hell);
+}
