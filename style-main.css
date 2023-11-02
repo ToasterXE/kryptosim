@@ -36,3 +36,39 @@ h1{
     border-color: var(--border_1);
     background-color: var(--bg_hell);
 }
+
+p{
+    color: hsl(0, 37%, 97%);
+}
+
+label{
+    color:hsl(0, 37%, 97%);
+}
+
+input{
+    margin: 10% 0%;
+}
+
+.kopfzeile{
+    display: flex;
+    justify-content: right;
+}
+
+.kopfzeile div{
+    padding-left: 20%;
+}
+
+.login{
+    
+    position: relative;
+}
+
+.dropdownlogin{
+    display: none;
+    position: absolute;
+    right: 0%;
+}
+
+.show{
+    display: block;
+}
