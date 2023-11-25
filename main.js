@@ -1,26 +1,29 @@
 let createButton = document.querySelector("create");
+let loginform = document.getElementById("loginform");
+
+
 
 function showlogin(){
   document.getElementById("dtl").classList.toggle("show");
 }
 
+loginform.addEventListener("submit", (e) => {
+  e.preventDefault();
 
+  let username = document.getElementById("username");
+  let password = document.getElementById("password");
 
+  if (username.value == "" || password.value == "") {
+    alert("ungültig");
+  }
+  else {
+    // perform operation with form input
+    alert("test");
+    console.log(
+      `This form has a username of ${username.value} and password of ${password.value}`
+    );
 
-
-// let myButton = document.querySelector("button");
-// let myHeading = document.querySelector("h1");
-// function setUserName() {
-//     const myName = prompt("Please enter your name.");
-//     localStorage.setItem("name", myName);
-//     myHeading.textContent = `Mozilla is cool, ${myName}`;
-//   }
-
-  
-//   if (!localStorage.getItem("name")) {
-//     setUserName();
-//   } else {
-//     const storedName = localStorage.getItem("name");
-//     myHeading.textContent = `Mozilla is cool, ${storedName}`;
-//   }
-  
+    username.value = "";
+    password.value = "";
+  }
+});
