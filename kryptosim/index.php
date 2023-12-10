@@ -3,13 +3,13 @@ session_start();
 ini_set('display_errors', 1);
 $host_name = 'db5014852654.hosting-data.io';
 $database = 'dbs12339433';
-$user_name = 'dbu1139207';
-$password = '^h6!-vJAmpQ_Cpg';
+$name = 'dbu1139207';
+$pass = '^h6!-vJAmpQ_Cpg';
 
 try{
-$pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $user_name, $password);
+$pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $name, $pass);
 } catch (PDOException $e){
-    echo "e";
+    echo $e;
 }
 ?>
 
@@ -17,7 +17,10 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
 <html>
     <head>
         <link rel="stylesheet" href="main/style-main.css">
-        <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+        <link rel="stylesheet" href="main/register.css">
+        <link rel="icon" type="image/x-icon" href="/main/favicon.ico">
+        <script src="main/e.js"></script>
+
         <title>Kryptosim</title>
         <h1>Willkommen bei Kryptosim!</h1>
     </head>
@@ -27,31 +30,25 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
 
        
         <div class="test">
-            <button><p>teest</p></button>
+            <button>teest</button>
            </div>
 
 
         <div class="login">
-        <button onclick="showlogin()"><p>login</p></button>
+        <button onclick="showlogin()">login</button>
             <div id="dtl" class="dropdownlogin">
-                <form action="?register=1" method="post" id="loginform">
+                <form action="?login=1" method="post" id="loginform">
                     <label for="email">E-mail</label>
                     <br>
                     <input type="email" id="email" placeholder="karlos@großratte.de" name="email">         
                     <br>
-                    <label for="username">username</label>
-                    <br>
-                    <input type="text" id="username" placeholder="SparkiHd2006" name="username">
-                    <br>
+                    
                     <label for="password">password</label>
                     <br>
                     <input type="password" id="password" placeholder="dootlord01" name="password">
                     <br>
-                    <label for="password">password wiederholen</label>
-                    <br>
-                    <input type="password" id="password2" placeholder="dootlord01" name="password2">
-                    <br>
-                    <button type="submit" name="loginbutton"><p>submit</p></button>
+                    
+                    <button type="submit" name="loginbutton">login</button>
                 </form>
             </div>
        </div>
@@ -60,71 +57,27 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
        
        <p>eeeeeeeeeeeeeeaeea</p>
        
-
-
-        <script src="main/e.js"></script>
     </body>
 </html>
 
 
 <?php
 
-if(isset($_GET['register'])) {
-    $error = false;
+if(isset($_GET['login'])) {
     $email = $_POST['email'];
-    $username = $_POST['username'];
-    $passwort = $_POST['password'];
-    $passwort2 = $_POST['password2'];
-  
-    if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo 'Bitte eine gültige E-Mail-Adresse eingeben<br>';
-        $error = true;
-    }     
-    if(strlen($passwort) == 0) {
-        echo 'Bitte ein Passwort angeben<br>';
-        $error = true;
-    }
-    if($passwort != $passwort2) {
-        echo 'Die Passwörter müssen übereinstimmen<br>';
-        $error = true;
-    }
-    
-    //Überprüfe, dass die E-Mail-Adresse noch nicht registriert wurde
-    if(!$error) { 
-        
-        $statement = $pdo->prepare("SELECT * FROM benutzer WHERE email = :email");
+    $password = $_POST['password'];
 
-        $result = $statement->execute(array('email' => $email));
-        $user = $statement->fetch();
-        
-        if($user !== false) {
-            echo 'Diese E-Mail-Adresse ist bereits vergeben<br>';
-            $error = true;
-        }    
-
-        $statement = $pdo->prepare("SELECT * FROM benutzer WHERE first_name = :first_name");
-        $result = $statement->execute(array('first_name' => $username));
-        $name = $statement->fetch();
-
-        if($name !== false){
-            echo 'Dieser Benutzername ist bereits vergeben<br>';
-            $error = true;
-        }
+    $statement = $pdo->prepare("SELECT * FROM benutzer WHERE email = :email");
+    $result = $statement->execute(array('email' => $email));
+    $user = $statement->fetch();    
+                
+    if($user && password_verify($password, $user['password'])) {
+        $_SESSION['userid'] = $user['id'];
+        die('Erfolgreich angemeldet');
+    }    
+    else{
+        echo("Unbekannte Benutzerdaten");
     }
-    
-    //Keine Fehler, wir können den Nutzer registrieren
-    if(!$error) {    
-        $passwort_hash = password_hash($passwort, PASSWORD_DEFAULT);
-        
-        $statement = $pdo->prepare("INSERT INTO benutzer (email, password, first_name) VALUES (:email, :password, :first_name)");
-        $result = $statement->execute(array('email' => $email, 'password' => $passwort_hash, 'first_name' => $username));
-        
-        if($result) {        
-            echo 'Du wurdest erfolgreich registriert.';
-        } else {
-            echo 'Beim Abspeichern ist leider ein Fehler aufgetreten<br>';
-        }
-    } 
-}
+    }    
 
 ?>

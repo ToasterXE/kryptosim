@@ -3,13 +3,13 @@ session_start();
 ini_set('display_errors', 1);
 $host_name = 'db5014852654.hosting-data.io';
 $database = 'dbs12339433';
-$user_name = 'dbu1139207';
-$password = '^h6!-vJAmpQ_Cpg';
+$name = 'dbu1139207';
+$pass = '^h6!-vJAmpQ_Cpg';
 
 try{
-$pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $user_name, $password);
+$pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $name, $pass);
 } catch (PDOException $e){
-    echo "e";
+    echo $e;
 }
 ?>
 
@@ -47,7 +47,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
             </div>
             <div class="feld">
                <label for="password">password:</label>
-                <input type="password" id="password" placeholder="dootlord01" name="password">
+                <input class="lightborder" type="password" id="password" placeholder="dootlord01" name="password">
                 <br>
             </div>
             <div class="feld">
@@ -57,6 +57,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
             </div>
             <button type="submit" name="loginbutton">Register</button>
         </form>
+        <br>
     </div>
     </div>
        
@@ -107,7 +108,7 @@ if(isset($_GET['register'])) {
         $result = $statement->execute(array('first_name' => $username));
         $name = $statement->fetch();
 
-        if($name !== false){
+        if($name){
             echo 'Dieser Benutzername ist bereits vergeben<br>';
             $error = true;
         }
@@ -121,7 +122,7 @@ if(isset($_GET['register'])) {
         $result = $statement->execute(array('email' => $email, 'password' => $passwort_hash, 'first_name' => $username));
         
         if($result) {        
-            echo 'Du wurdest erfolgreich registriert.';
+            echo 'Du wurdest erfolgreich registriert.<br> Zum <a href="./index.php">Start</a>';
         } else {
             echo 'Beim Abspeichern ist leider ein Fehler aufgetreten<br>';
         }

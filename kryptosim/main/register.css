@@ -20,7 +20,7 @@ input{
 form{
     display: flex;
     flex-direction: column;
-
+    padding: 10px 0px;
     align-items: center;
     border-radius: 15px;
     border: solid;
@@ -42,13 +42,15 @@ form div{
 input{
     width: 100%;
     box-sizing: border-box;
-
+    border-radius: 10px;
+    border: none;
 }
 
 label{
     width: 100%;
     background-color: hsl(202, 66%, 13%);
     box-sizing: border-box;
+    border-width: 1px;
 }
 
 
@@ -71,5 +73,6 @@ button {
 button:hover {
     background-position: -20px -20px;
 }
+
 
 
