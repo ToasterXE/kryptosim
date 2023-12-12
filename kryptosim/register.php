@@ -27,9 +27,9 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
     <div class="kopfzeile">
 
        
-        <div class="test">
-            <button>teest</button>
-        </div>
+    <div class="test">
+        <a href="/index"><button>home</button></a>
+    </div>
 
     </div>
     <div class="main">

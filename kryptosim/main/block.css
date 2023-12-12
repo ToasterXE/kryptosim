@@ -1,0 +1,60 @@
+:root{
+
+    --border_1: hsl(203, 42%, 50%);
+    --bg_hell: hsl(203, 42%, 29%);
+    --bg_heller: hsl(203, 42%, 19%);
+    --bg_dunkel: hsl(201, 44%, 6%);
+    --bg_liste: hsl(, 46%, 62%);
+
+}
+
+.liste{
+    width: 70%;
+    box-shadow: inset 0 0 5px var(--border_1);
+    box-sizing: border-box;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: var(--border_1);
+    border-width: 1px;
+    /* background-color: var(--bg_liste); */
+    color: rgb(220,220,220);
+    padding: 10px 0px;
+}
+
+
+.block{
+    width: 20%;
+    margin: 0px 20px;
+    /* box-shadow: 0 0 10px var(--border_1); */
+    background-color: var(--bg_heller);
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: var(--border_1);
+    border-style: solid;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.header{
+    border-top: solid;
+    border-bottom: solid;
+    border-width: 1px;
+    border-color: var(--border_1);
+    margin: 20px 0px;
+    width: 100%;
+}
+
+
+.blockchain{
+    width: 100%;
+    display:flex;
+    justify-content: center;
+
+}
+
+.main{
+    margin-top: 20px;
+}

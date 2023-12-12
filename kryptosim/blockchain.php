@@ -17,21 +17,22 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
 <html>
     <head>
         <link rel="stylesheet" href="main/style-main.css">
-        <link rel="stylesheet" href="main/register.css">
+        <link rel="stylesheet" href="main/block.css">
         <link rel="icon" type="image/x-icon" href="/main/favicon.ico">
         <script src="main/e.js"></script>
+        <script src="main/block.js"></script>
 
         <title>Kryptosim</title>
-        <h1>Willkommen bei Kryptosim!</h1>
+        <h1>Blockchain (test)</h1>
     </head>
-    <body>
+    <body onload="update_blocks()">
 
     <div class="kopfzeile">
 
-       
-        <div class="test">
-            <a href="/index"><button>home</button></a>
-           </div>
+    
+    <div class="test">
+        <a href="/index"><button>home</button></a>
+    </div>
 
         <div>
             <a href="/blockchain"><button>blockchain</button></a>
@@ -60,8 +61,34 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
        </div>
 
     </div>   
-       
-       <p>eeeeeeeeeeeeeeaeea</p>
+    <div class="main">   
+        <div class="blockchain">
+                <?php
+                    $statement = $pdo->prepare("SELECT * FROM blocks");
+                    $statement->execute();
+                    while($row = $statement->fetch(PDO::FETCH_ASSOC)){
+                        $id = $row["id"];
+                        $header = $row["header"];
+                        $t1 = $row["t1_id"];
+                        $hash = $row
+                        ?>
+                        <div class='block'>
+                            <div class="header">
+                                <?php echo($header); ?>
+                            </div>    
+                            <div class="liste">
+                                text text text text text text text text text text text text text text text text text text text text text text text text
+                            </div>         
+                            <div class="header">
+                                (noch berechnen)
+                            </div>
+                            
+                            </div>                    
+                        <?php
+                        }
+                        ?>
+        </div>
+    </div>
        
     </body>
 </html>
