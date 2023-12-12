@@ -19,7 +19,7 @@ async function update_blocks(){
     text = (block.querySelector('.liste')).textContent;
     var input = oldhash.replace(/\s+/g, '')+text.replace(/\s+/g, '');
     await hash(input).then((e) => {realhash = e});
-    console.log(input, realhash);
+    // console.log(input, realhash);
     if(currenthash !== realhash){
 
       block.querySelector('#hash').textContent = realhash;
