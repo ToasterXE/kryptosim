@@ -55,6 +55,11 @@
 
 }
 
+.invalid{
+    background-color: hsl(0, 65%, 50%);
+}
+
+
 .main{
     margin-top: 20px;
 }

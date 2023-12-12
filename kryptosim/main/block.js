@@ -1,29 +1,55 @@
-import sjcl from 'sjcl'
 
 blocks = document.getElementsByClassName("block");
-console.log(blocks);
+var currenthash;
 
-function update_blocks(){
-    for(block of blocks){
-        console.log("e");
+async function update_blocks(){
+  var lasthash = blocks[0].querySelector('.header').textContent;
+  var header, headertext, text, block;
+
+  for(let i = 0; i<blocks.length; i++){
+    block =  blocks[i];  
+    header = block.querySelector('.header');
+    headertext = header.textContent;
+
+    if(lasthash !== headertext){
+      header.textContent = lasthash;
     }
+    
+    lasthash = blocks[i].querySelector('#hash').textContent;
+    text = (block.querySelector('.liste')).textContent;
+    await hash(headertext+text).then((e) => {test(e)});
+    console.log(currenthash);
+  }
+}
+ 
+function test(str){
+  console.log(str);
+  currenthash = str;
+  console.log(currenthash);
 }
 
-function hash(string) {
-    const utf8 = new TextEncoder().encode(string);
-    return crypto.subtle.digest('SHA-256', utf8).then((hashBuffer) => {
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const hashHex = hashArray
-        .map((bytes) => bytes.toString(16).padStart(2, '0'))
-        .join('');
-      return hashHex;
-    });
+
+function verify_blocks(){
+  var lastheader = blocks[0].querySelector('.header').textContent;
+  var header, headertext, block;
+  for(let i = 0; i<blocks.length; i++){
+    block =  blocks[i];  
+    header = block.querySelector('.header');
+    headertext = header.textContent;
+
+    if(lastheader !== headertext){
+      header.classList.toggle("invalid");
+    }
+    
   }
+}
 
-console.log(hash("E"));
 
-
-const myString = 'Hello'
-const myBitArray = sjcl.hash.sha256.hash(myString)
-const myHash = sjcl.codec.hex.fromBits(myBitArray)
-console.log(myHash);
+async function hash(string) {
+    const string_encode = new TextEncoder().encode(string);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', string_encode);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map((bytes) => 
+      bytes.toString(16).padStart(2, '0')).join('');
+      return hashHex;
+}
