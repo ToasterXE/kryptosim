@@ -47,15 +47,20 @@ async function verify_blocks(){
 
     var realhash;
     await hash(headertext+text).then((e) => {realhash = e});
-    console.log(realhash, hashtext);
-    if(lasthash !== headertext || hashtext !== realhash){
+    // console.log(realhash, hashtext);
+    if(lasthash !== headertext){
       headerdiv.classList.add("invalid");
-      hashdiv.classList.add("invalid");
     }
     else{
       headerdiv.classList.add("verified");
+    }
+    if(hashtext !== realhash){
+      hashdiv.classList.add("invalid");
+    }
+    else{
       hashdiv.classList.add("verified");
     }
+
     lasthash = block.querySelector('#hash').textContent;
     
   }

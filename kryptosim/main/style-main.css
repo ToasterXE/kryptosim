@@ -54,7 +54,7 @@ label{
 .lightborder{
     border-width: 1px;
     border: solid;
-    border-radius: 5px;
+    border-radius: 10px;
     border-color: var(--border_1);
 }
 
@@ -64,18 +64,18 @@ label{
     justify-content: space-evenly;
 }
 
-.login{
-    
-    position: relative;
-}
 
+
+.register{
+    margin: 0px;
+}
 
 .dropdownlogin{
     display: none;
     position: absolute;
     right: 0%;
-    width: 80%;
-    margin-top: 10px;
+    width: 40%;
+    margin-top: 40px;
 }
 
 

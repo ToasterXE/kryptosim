@@ -42,7 +42,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
             </div>
             <div class="feld">
                 <label for="username">username:</label>
-                <input type="text" id="username" placeholder="SparkiHd2006" name="username">
+                <input type="text" id="username" placeholder="username" name="username">
                 <br>
             </div>
             <div class="feld">
