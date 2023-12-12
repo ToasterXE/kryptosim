@@ -3,25 +3,29 @@ blocks = document.getElementsByClassName("block");
 var realhash;
 
 async function update_blocks(){
-  var currenthash = blocks[0].querySelector('.header').textContent;
+  var oldhash = blocks[0].querySelector('.header').textContent;
   var header, headertext, text, block;
 
   for(let i = 0; i<blocks.length; i++){
     block =  blocks[i];  
     header = block.querySelector('#header');
+    currenthash = block.querySelector('#hash').textContent;
     headertext = header.textContent;
 
-    if(currenthash !== headertext){
-      header.textContent = currenthash;
+    if(oldhash !== headertext){
+      header.textContent = oldhash;
     }
     
     text = (block.querySelector('.liste')).textContent;
-    await hash(currenthash+text).then((e) => {realhash = e});
-
+    var input = oldhash.replace(/\s+/g, '')+text.replace(/\s+/g, '');
+    await hash(input).then((e) => {realhash = e});
+    console.log(input, realhash);
     if(currenthash !== realhash){
+
       block.querySelector('#hash').textContent = realhash;
     }
-    currenthash = block.querySelector('#hash').textContent;
+    oldhash = block.querySelector('#hash').textContent;
+    
 
   }
 }
@@ -46,7 +50,8 @@ async function verify_blocks(){
     hashdiv.classList.remove("verified");
 
     var realhash;
-    await hash(headertext+text).then((e) => {realhash = e});
+    var input = headertext.replace(/\s+/g, '')+text.replace(/\s+/g, '');
+    await hash(input).then((e) => {realhash = e});
     // console.log(realhash, hashtext);
     if(lasthash !== headertext){
       headerdiv.classList.add("invalid");
