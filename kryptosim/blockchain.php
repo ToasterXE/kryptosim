@@ -25,7 +25,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
         <title>Kryptosim</title>
         <h1>Blockchain (test)</h1>
     </head>
-    <body onload="update_blocks()">
+    <body>
 
     <div class="kopfzeile">
 
@@ -74,13 +74,17 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                         ?>
                         <div class='block'>
                             <div class="header">
+                                <div id="header">
                                 <?php echo($header); ?>
+                                </div>
                             </div>    
                             <div class="liste">
                                 text text text text text text text text text text text text text text text text text text text text text text text text
                             </div>         
-                            <div class="header" id="hash">
+                            <div class="header">
+                            <div id="hash">
                                 (noch berechnen)
+                            </div>
                             </div>
                             
                             </div>                    
@@ -88,6 +92,8 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                         }
                         ?>
         </div>
+            <button onclick="verify_blocks()">verify</button>
+            <button onclick="update_blocks()">update</button>
     </div>
        
     </body>

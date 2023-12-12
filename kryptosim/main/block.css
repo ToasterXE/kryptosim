@@ -45,6 +45,7 @@
     border-color: var(--border_1);
     margin: 20px 0px;
     width: 100%;
+    overflow-wrap: break-word;
 }
 
 
@@ -52,6 +53,7 @@
     width: 100%;
     display:flex;
     justify-content: center;
+    margin-bottom: 20px;
 
 }
 
@@ -59,7 +61,14 @@
     background-color: hsl(0, 65%, 50%);
 }
 
+.verified{
+    background-color: hsl(125, 56%, 41%);
+}
 
 .main{
     margin-top: 20px;
+}
+
+.header div{
+    padding: 0px 15%;
 }
