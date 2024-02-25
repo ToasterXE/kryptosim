@@ -1,3 +1,4 @@
+<!-- unwichtig -->
 <?php
 $password = "$2y$10$.g1iYEEjH3UVCLOwAGjb1.v9uHKGk1GW4BzADW60ZCrjQgYRyQiZO$";
 $e = "eeeeeee";

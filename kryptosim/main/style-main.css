@@ -1,6 +1,7 @@
 :root{
 
     --border_1: hsl(203, 42%, 50%);
+    --border_2: hsl(203, 72%, 72%);
     --bg_hell: hsl(203, 42%, 29%);
     --bg_heller: hsl(203, 42%, 19%);
     --bg_dunkel: hsl(201, 44%, 6%);
@@ -29,6 +30,17 @@
 }
 
 
+.alert{
+    position: absolute;
+    z-index: 1;
+    top: 200px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: hsl(0, 77%, 29%);
+    background-color: hsl(0, 76%, 43%);
+    padding:10px;
+}
+
 h1{
     color: var(--bg_dunkel);
     border-style: solid;
@@ -38,6 +50,30 @@ h1{
     background-color: var(--bg_hell);
     padding: 20px;
 }
+
+h2{
+    color: var(--bg_dunkel);
+    position: relative;
+    border-width: 1px;
+    border-color: var(--border_2);
+    background-color: var(--bg_hell);
+    padding: 10px;
+    width: 100%;
+}
+
+h2::after{
+    content : "";
+    position: absolute;
+    border-bottom-style: solid;
+    border-width: 1px;
+    border-color: var(--border_2);
+    margin: 0px;
+    left: 18%;
+    bottom: 0;
+    height: 1px;
+    width: 64%;
+}
+
 
 p{
     color: hsl(0, 37%, 97%);
@@ -73,14 +109,22 @@ label{
 .dropdownlogin{
     display: none;
     position: absolute;
-    right: 0%;
-    width: 40%;
+    left: 60%;
+    width: 20%;
     margin-top: 40px;
+    z-index: 999;
 }
 
 
 .show{
     display: block;
+}
+
+#hidden{
+    border: none;
+    background: none;
+    margin: 0px;
+    padding: 0px;
 }
 
 
@@ -105,4 +149,43 @@ button:hover {
 }
 
 
+input{
+    margin: 10px 0px;
+}
 
+
+form{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0px;
+    align-items: center;
+    border-radius: 15px;
+    border: solid;
+    border-color: hsl(203, 42%, 50%);
+    border-width: 1px;
+    background-color: hsl(203, 42%, 19%);
+}
+
+form div{
+    background-color: hsl(203, 42%, 19%);
+    box-sizing: border-box;
+    width: 70%;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+input{
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: none;
+}
+
+label{
+    width: 100%;
+    background-color: hsl(202, 66%, 13%);
+    box-sizing: border-box;
+    border-width: 1px;
+}

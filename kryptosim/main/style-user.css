@@ -1,0 +1,83 @@
+:root{
+
+    --border_1: hsl(203, 42%, 50%);
+    --border_2: hsl(203, 72%, 72%);
+    --bg_hell: hsl(203, 42%, 29%);
+    --bg_heller: hsl(203, 42%, 19%);
+    --bg_dunkel: hsl(201, 44%, 6%);
+
+
+}
+
+.main div{
+    width: 50%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    height: fit-content;
+}
+
+
+
+.main{
+    display: flex;
+}
+
+
+.main div div{
+    position: relative;
+    width: 100%;
+}
+
+
+
+td{
+    text-align: left;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.left::after{
+    content : "";
+    position: absolute;
+    border-left-style: solid;
+    border-width: 1px;
+    border-color: var(--border_2);
+    margin: 0px;
+    left: 0%;
+    bottom: 0%;
+    height: 64%;
+    width: 1px;
+}
+
+.left::before{
+    content: "";
+    position: absolute;
+    border-bottom-style: solid;
+    border-width: 1px;
+    border-color: var(--border_2);
+    margin: 0px;
+    left: 0px;
+    bottom: 10px;
+    height: 1px;
+    width: 90%;
+
+}
+
+
+.right{
+    text-align: right;
+}
+
+.left{
+    /* border-left: 1px solid var(--border_2); */
+    position: relative;
+
+}
+
+table{
+    margin: 10%;
+    width: 64%;
+}
