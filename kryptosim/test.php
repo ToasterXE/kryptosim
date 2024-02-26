@@ -1,15 +1,10 @@
 <?php
-    if($_SERVER["REQUEST_METHOD"]== "post" ){
-        $username = $_POST["username"];
-        $password = $_POST["email"];
+    chdir('/kunden/homepages/10/d985874548/htdocs/c');
+    echo getcwd() . "\n";   #e;
 
-
-    $response = [
-        "status" => "success",
-        "message" => "test bestenden"
-    ];
-
-    header("Content-Type: applicaion/json");
-    echo json_encode($response);
-    }
+    // system("https://kryptosim.eu/c/teest.exe 2>&1", $out);
+    // print_r($out);
+    exec('whoami', $output);
+echo $output[0];
+    echo("e");
 ?>

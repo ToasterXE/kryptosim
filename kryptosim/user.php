@@ -48,7 +48,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                 if($user && password_verify($password, $user['password'])) {
                     $_SESSION['userid'] = $user['id'];
                 }    
-                else{
+                else if(!isset($_POST['generate_button'])){
                     ?>
                     <div class="alert">
                         unbekannte benutzerdaten
@@ -236,7 +236,10 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
 function generate_pair(){
     $p = getprime();
     $q = getprime();
-    echo($p." ".$q);
+    $n = $p*$q;
+    echo($p." ".$q." ".$n);
+
+
 }
 
 function getprime(){
@@ -248,7 +251,7 @@ function getprime(){
         $counter += 1;
 
     }
-    // echo($counter."\r\n");
+    echo($counter."\r\n");
 
     return $num;
 
