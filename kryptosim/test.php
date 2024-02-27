@@ -1,10 +1,18 @@
-<?php
-    chdir('/kunden/homepages/10/d985874548/htdocs/c');
-    echo getcwd() . "\n";   #e;
+7482718613521
+748271861353
+7482718613521
 
-    // system("https://kryptosim.eu/c/teest.exe 2>&1", $out);
-    // print_r($out);
-    exec('whoami', $output);
-echo $output[0];
-    echo("e");
-?>
+2730487059400
+273048705940
+
+83443 
+548149716
+54814971619
+
+385956911161
+38595691116
+
+4434916739648
+443491673964
+
+10853579449

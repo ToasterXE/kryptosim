@@ -164,6 +164,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                 </table>
 
             </div>
+
             <div class="walletinfo">
                 <h2>Wallet</h2>    
             
@@ -175,7 +176,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                     </td>
                     <td class="right">
                         <?php
-                        echo($user['public_key']);
+                        echo($user['key_n']." ".$user['public_key']);
                         ?>
 
                     </td>
@@ -186,9 +187,8 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                     </td>
                     <td class="right">
                         <?php
-                        echo($user['private_key']);
+                        echo($user['key_n']." ".$user['private_key']);
                         ?>
-
                     </td>
                 </tr>
                 <tr>
@@ -211,8 +211,21 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                         <button type="submit" name="generate_button" value="e">generate keypair</button>
                         </form>
                         <?php
+
                         if(isset($_POST['generate_button'])){
-                            generate_pair();
+                            
+                            $a =generate_pair();
+                            $private_d = $a[0];
+                            $public_e = $a[1];
+                            $modul_n = $a[2];
+
+                            echo($private_d." ".$public_e." ".$modul_n);
+
+                            $statement = $pdo->prepare("UPDATE benutzer SET private_key = :private_key, public_key = :public_key, key_n = :key_n WHERE id = $id");
+                            $result = $statement->execute(array('private_key' => $private_d, 'public_key' => $public_e, 'key_n' => $modul_n));
+                            if($result) {
+                                die("Dein Passwort wurde erfolgreich geändert");
+                                }
                         }
                     }
                 ?>
@@ -227,8 +240,6 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
 
        <!-- <p>eeeeeeeeeeeeeeaeea</p> -->
 
-    </body>
-</html>
 
 
 
@@ -237,21 +248,63 @@ function generate_pair(){
     $p = getprime();
     $q = getprime();
     $n = $p*$q;
-    echo($p." ".$q." ".$n);
+    // echo($p." ".$q." ".$n." ");
 
+    $ph = ($p-1)*($q-1);
+    // echo($ph);
+    // echo("ph ");
+    $e = getprime(max($p, $q), $ph);
+
+    // echo($e);
+    // echo("e ");
+    // echo($ph);
+    // echo("ph ");
+    // echo($ph);
+    // echo("ph ");
+    $d = getd($ph,$e);
+    // echo("d ");
+    // echo($ph);
+    // echo("ph ");
+    return array($d, $e, $n);
 
 }
 
-function getprime(){
-    $num = random_int(100000000000000,999999999999999999);
+function getd($phi = 1000000000*1000000000,$e){
+    $temp = 1;
+    $p = $phi;
+    // echo($phi);
+    // echo("phfunc ");
+    while($temp % $e != 0){
+        $temp += $p;
+    }
+    // echo(" e".$temp." ".$phi."e ");
+
+    return $temp/$e;
+
+}
+
+function phi($n){
+    $sq = sqrt($n)+1;
+    $ans = 0;
+    for($i = 1; $i <$sq; $i += 1){
+        if($n%$i!=0){
+                $ans++;
+        }
+    }
+    return $ans;
+
+}
+
+function getprime($min=100000000, $max=999999999){
+    $num = random_int(100000,999999);
     $counter = 0;
     while(!isprime($num)){
 
-        $num = random_int(100000000000000,999999999999999999);
+        $num = random_int(100000,999999);
         $counter += 1;
 
     }
-    echo($counter."\r\n");
+    // echo($counter."\r\n");
 
     return $num;
 
@@ -277,3 +330,6 @@ function isprime($n){
 }
 
 ?>
+
+</body>
+</html>
