@@ -176,7 +176,9 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                     </td>
                     <td class="right">
                         <?php
-                        echo($user['key_n']." ".$user['public_key']);
+                        if($user['key_n']!=0){
+                            echo($user['key_n']." ".$user['public_key']);
+                        }
                         ?>
 
                     </td>
@@ -187,7 +189,9 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                     </td>
                     <td class="right">
                         <?php
-                        echo($user['key_n']." ".$user['private_key']);
+                        if($user['key_n'] != 0){
+                            echo($user['key_n']." ".$user['private_key']);
+                        }
                         ?>
                     </td>
                 </tr>
@@ -219,13 +223,14 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                             $public_e = $a[1];
                             $modul_n = $a[2];
 
-                            echo($private_d." ".$public_e." ".$modul_n);
+                            // echo($private_d." ".$public_e." ".$modul_n);
 
                             $statement = $pdo->prepare("UPDATE benutzer SET private_key = :private_key, public_key = :public_key, key_n = :key_n WHERE id = $id");
                             $result = $statement->execute(array('private_key' => $private_d, 'public_key' => $public_e, 'key_n' => $modul_n));
                             if($result) {
-                                die("Dein Passwort wurde erfolgreich geändert");
-                                }
+                                header('Location: /user');
+                                die();
+                            }
                         }
                     }
                 ?>
