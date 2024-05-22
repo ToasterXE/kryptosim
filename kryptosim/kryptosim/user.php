@@ -174,28 +174,32 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                     <td class="left">
                         public key:
                     </td>
-                    <td class="right">
+                    <td class="right" id="public_key">
                         <?php
                         if($user['key_n']!=0){
                             echo($user['public_key']." ".$user['key_n']);
                         }
                         ?>
-
+                    </td>
+                    <td class="right">
+                        <button onclick="copy('public_key')">copy</button>
                     </td>
                 </tr>
                 <tr>
                     <td class="left">
                         private key:
                     </td>
-                    <td class="right">
+                    <td class="right" id ="private_key">
                         <?php
                         if($user['key_n'] != 0){
                             echo($user['private_key']." ".$user['key_n']);
                         }
                         ?>
                     </td>
+                    <td class="right">
+                        <button onclick="copy('private_key')">copy</button>
+                    </td>
                 </tr>
-                <tr>
                     <td class="left">
                         balance:
                     </td>

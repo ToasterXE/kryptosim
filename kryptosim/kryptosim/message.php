@@ -101,7 +101,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
 
             <div class="messagefeld">
                 <input type="text" id="message" placeholder="your message">
-                <input type="text" id="key" placeholder="your key (1)">
+                <input type="text" id="key" placeholder="your key (1)" onpaste="fixinput(event)">
                 <input type="text" id="space" placeholder="your key (2)">
             </div>
 
