@@ -1,0 +1,14 @@
+:root{
+
+    --border_1: hsl(203, 42%, 50%);
+    --border_2: hsl(203, 72%, 72%);
+    --bg_hell: hsl(203, 42%, 29%);
+    --bg_heller: hsl(203, 42%, 19%);
+    --bg_dunkel: hsl(201, 44%, 6%);
+
+
+}
+
+input{
+    width: 64%;
+}

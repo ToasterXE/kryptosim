@@ -1,0 +1,80 @@
+:root{
+
+    --border_1: hsl(203, 42%, 50%);
+    --border_2: hsl(203, 72%, 72%);
+    --bg_hell: hsl(203, 42%, 29%);
+    --bg_heller: hsl(203, 42%, 19%);
+    --bg_dunkel: hsl(201, 44%, 6%);
+
+
+}
+
+.main{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.messagefeld{
+    width: 50%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 25%;
+    margin-right: 25%;
+    align-items: center;
+    justify-content: center;
+}
+
+.result{
+    width: 100%;
+    display: flex;
+    border-style: solid;
+    border-color: var(--border_2);
+    border-width: 1px;
+    border-radius: 0%;
+    align-items: center;
+    height: 100px;
+    justify-content: center;
+}
+ 
+
+
+.messagefeld input{
+    width: 100%;
+    border-style: solid;
+    border-color: var(--border_2);
+    border-width: 1px;
+    border-radius: 0%;
+    height: 100px;
+    font-size: 18px;
+}
+
+
+#key{
+    width: 30%;
+    margin-right: 10%;
+    height: 50px;
+}
+
+#space{
+    width: 60%;
+    height: 50px;
+}
+
+
+*:focus{
+    outline: none;
+    border-style: solid;
+    border-color: var(--border_2);
+    border-width: 1px;
+}
+
+.edbuttons{
+    display: flex;
+    width: 50%;
+    align-items: center;
+    justify-content: center;
+    gap: 1%;
+    
+}

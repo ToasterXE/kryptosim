@@ -2,6 +2,8 @@
 
 if (!isset($_SERVER['HTTPS'])){
     header('Location: https://kryptosim.eu');
+ // page is called from https
+ // Connection is secured
 }
 
 
@@ -25,21 +27,23 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
     <head>
         <link rel="stylesheet" href="./main/style-main.css">
         <link rel="stylesheet" href="./main/register.css">
+        <link rel="stylesheet" href="./main/style-message.css">
         <link rel="icon" type="image/x-icon" href="/main/favicon.ico">
         <script src="main/e.js"></script>
+        <script src="main/encrypt.js"></script>
 
         <title>Kryptosim</title>
-        <h1>Willkommen bei Kryptosim!</h1>
+        <h1>encrypt/decrypt message</h1>
     </head>
-    <body>
+    <body onload="init()">
 
-    <!-- <div class="kopfzeile">
+    <div class="kopfzeile">
 
        
         <a href="/index"><button>home</button></a>
         <a href="/blockchain"><button>blockchain</button></a>
-        <a href="/register"><button>register</button></a>
         <a href="/message"><button>encrypt/decrypt</button></a>
+        <a href="/register"><button>register</button></a>
 
 
         <?php
@@ -90,12 +94,32 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
             ?>
 
             <a href="/user"><button>profile</button></a>
-            
-        </div> -->
+
+        </div>
        
-       <p>Derzeit in Bearbeitung</p>
+        <div class="main" id="test">
+
+            <div class="messagefeld">
+                <input type="text" id="message" placeholder="your message">
+                <input type="text" id="key" placeholder="your key (1)">
+                <input type="text" id="space" placeholder="your key (2)">
+            </div>
+
+            <div class = "edbuttons">
+                <button onclick=encryptmessage()>encrypt</button>
+                <button onclick=decryptmessage()>decrypt</button>
+            </div>
+
+            <div class="messagefeld">
+                <div class="result">
+                    <p id="result">
+                        result
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
 
     </body>
 </html>
-
-

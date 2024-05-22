@@ -34,7 +34,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
         <a href="/index"><button>home</button></a>
         <a href="/blockchain"><button>blockchain</button></a>
         <a href="/register"><button>register</button></a>
-
+        <a href="/message"><button>encrypt/decrypt</button></a>
 
         <?php
             if(isset($_GET['login'])) {
@@ -177,7 +177,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                     <td class="right">
                         <?php
                         if($user['key_n']!=0){
-                            echo($user['key_n']." ".$user['public_key']);
+                            echo($user['public_key']." ".$user['key_n']);
                         }
                         ?>
 
@@ -190,7 +190,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                     <td class="right">
                         <?php
                         if($user['key_n'] != 0){
-                            echo($user['key_n']." ".$user['private_key']);
+                            echo($user['private_key']." ".$user['key_n']);
                         }
                         ?>
                     </td>

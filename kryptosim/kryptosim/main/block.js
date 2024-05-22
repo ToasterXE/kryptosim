@@ -1,5 +1,6 @@
 
 blocks = document.getElementsByClassName("block");
+console.log(blocks);
 var realhash;
 
 async function update_blocks(){

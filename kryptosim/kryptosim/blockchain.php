@@ -34,6 +34,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
 <a href="/index"><button>home</button></a>
 <a href="/blockchain"><button>blockchain</button></a>
 <a href="/register"><button>register</button></a>
+<a href="/message"><button>encrypt/decrypt</button></a>
 
 
 <?php
