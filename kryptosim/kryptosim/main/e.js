@@ -33,7 +33,6 @@ async function fixinput(event){
     var currentfeld = document.getElementById("key");
     currentfeld.value = "";
     for (const item of clipboardContents) {
-        console.log(item);
         currentfeld.value += item;
         if(item == " "){
           currentfeld = document.getElementById("space");

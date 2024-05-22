@@ -28,7 +28,11 @@ function encryptmessage(){
             res_ee += pow(parseInt(m_str.slice(i*9,(i*9+8 > m_str.length ? m_str.length : i*9+9))), k, space).toString();
             if(res_ee.length %12){
                 console.log("e");
-                res_ee = res_ee.slice(0,i*12) + ("0"*res_ee%12) + res_ee.slice(i*12);
+                res_eee = res_ee.slice(0,i*12);
+                for(let j = 0; j<12-res_ee.length%12; j++){
+                    res_eee += "0";
+                }
+                res_ee = res_eee + res_ee.slice(i*12);
             }
         }
         // res_e = pow(m_int, k, space);
@@ -51,9 +55,13 @@ function decryptmessage(){
         res_dd = "";
         c_str = c.toString();
         for(let i = 0; i<c_str.length/12; i++){
-            console.log((c_str.slice(i*12,(i*12+11 > c_str.length ? c_str.length : i*12+12))));
-            console.log(toStr(pow(parseInt(c_str.slice(i*12,(i*12+11 > c_str.length ? c_str.length : i*12+12))), k, space).toString()));
-            res_dd += pow(parseInt(c_str.slice(i*12,(i*12+11 > c_str.length ? c_str.length : i*12+12))), k, space).toString();
+            substr = (c_str.slice(i*12,(i*12+11 > c_str.length ? c_str.length : i*12+12)));
+            while(substr[0] == "0"){
+                substr = substr.slice(1, substr.length);
+            }
+            console.log(substr);
+            console.log(toStr(pow(parseInt(substr), k, space).toString()));
+            res_dd += pow(parseInt(substr), k, space).toString();
         }
 
         console.log(toStr(res_dd));
