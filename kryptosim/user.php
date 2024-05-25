@@ -22,12 +22,11 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
         
         <link rel="icon" type="image/x-icon" href="/main/favicon.ico">
         <script src="main/e.js"></script>
-        <script src="main/page.js"></script>
+
         <title>Kryptosim - user</title>
         <h1>Profile</h1>
     </head>
-    <body onload="page(0)">
-    <div>
+    <body>
 
     <div class="kopfzeile">
 
@@ -175,32 +174,28 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                     <td class="left">
                         public key:
                     </td>
-                    <td class="right" id="public_key">
+                    <td class="right">
                         <?php
                         if($user['key_n']!=0){
                             echo($user['public_key']." ".$user['key_n']);
                         }
                         ?>
-                    </td>
-                    <td class="right">
-                        <button onclick="copy('public_key')">copy</button>
+
                     </td>
                 </tr>
                 <tr>
                     <td class="left">
                         private key:
                     </td>
-                    <td class="right" id ="private_key">
+                    <td class="right">
                         <?php
                         if($user['key_n'] != 0){
                             echo($user['private_key']." ".$user['key_n']);
                         }
                         ?>
                     </td>
-                    <td class="right">
-                        <button onclick="copy('private_key')">copy</button>
-                    </td>
                 </tr>
+                <tr>
                     <td class="left">
                         balance:
                     </td>
@@ -245,173 +240,9 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
         
         <?php
         }
-        $sortby = isset($_GET['sort']) ? $_GET['sort'] : 'id';
-        $order = isset($_GET['order']) ? $_GET['order'] : 'ASC'; 
-        $search = isset($_GET['search']) ? $_GET['search'] : '';
-        if(isset($_POST['usersearch'])){
-            $search = ($_POST['usersearch']);
-        }
-        ?>
-        </div>
-    </div>
-    <h2>global users</h2>
-    <div class="forms">
-        <div class="forms">
-        <p>sort by:</p>
-        <form method="post" style="all: unset" action="?order=<?php print(($order)); if(!empty($search)){?>&search=<?php print($search);}?>">
 
-            <button type="submit" name="namesort" id="namesort">name 
-            <?php if(isset($_POST['namesort'])){
-                $sortby = 'first_name';
-                ?>
-                &check;
-                <?php
-            }
-            ?>    
-            </button>
-            <button type="submit" name="creationsort" id="creationsort">account creation        
-                <?php if(isset($_POST['creationsort'])){
-                    $sortby = 'created_at';
-                ?>
-                    &check;
-                <?php
-            }
-            ?>  
-            </button>
-            <button type="submit" name="keysort" id="keysort">key     
-                <?php if(isset($_POST['keysort'])){
-                    $sortby = 'public_key';
-                ?>
-                &check;
-                <?php
-            }
-            ?>  
-            </button>
-            <button formaction="?order=<?php print(($order == 'ASC') ? 'DESC' : 'ASC'); ?>&sort=<?php print($sortby); if(!empty($search)){?>&search=<?php print($search);}?>" type="submit" name="changeorder" id="changeorder">
-                <?php 
-                    if($order == 'ASC'){
-                        ?>&uarr;<?php
-                    }
-                    else{ 
-                        ?>&darr;<?php
-                    }               
-                ?>
-                
-            </button>
-        </form>
-        </div>
-
-        <div class="forms">
-        <p>search:</p>
-        <form method="post" style="all: unset" action="?order=<?php print($order); ?>&sort=<?php print($sortby); if(!empty($search)){?>&search=<?php print($search);}?>">
-            <input class="lightborder" type="text" name="usersearch" placeholder="name, id, key..."></input>
-        </form>
-        <?php
-        if($search != ""){
-            // $search = ($_POST['usersearch']);
-            ?><p>searching for: </p><p style="margin-left: 0px;" class="highlighted"><?php print($search) ?></p>
-            <?php
-        
-        }
         ?>
 
-
-        </div>
-    </div>
-    <div class="userliste">
-        <br>
-        <?php
-
-
-
-            $statement = $pdo->prepare("SELECT * FROM benutzer WHERE 
-                                        first_name LIKE '%{$search}%' 
-                                        OR id LIKE '%{$search}%' 
-                                        OR public_key LIKE '%{$search}%' 
-                                        OR key_n LIKE '%{$search}%' 
-                                        ORDER BY $sortby $order");
-            $result = $statement->execute(array());
-            $count = 0;
-            while($users = $statement->fetch()){
-                $count++;
-                ?>
-                <div class="useritem lightborder">
-                    <table>
-                    <tr>
-                        <td class="left">
-                            username:
-                        </td>
-                        <td class="right">
-                            <?php
-                            echo($users['first_name']);
-                            ?>
-
-                        </td>
-                        <td class="right">
-                            <button class="tablebutton">message</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="left">
-                            account creation:
-                        </td>
-                        <td class="right">
-                            <?php
-                            echo($users['created_at']);
-                            ?>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="left">
-                            user id:
-                        </td>
-                        <td class="right">
-                            <?php
-                            echo($users['id']);
-                            ?>
-
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="left">
-                            public key:
-                        </td>
-                        <td class="right" id="public_key<?php print($users['id']) ?>">
-                            <?php
-                            if($users['key_n']!=0){
-                                echo($users['public_key']." ".$users['key_n']);
-                            }
-                            ?>
-                        </td>
-                        <td class="right">
-                            <button class="tablebutton" onclick="copy('public_key<?php print($users['id']) ?>')">copy</button>
-                        </td>
-                    </tr>
-                    <!-- </tr>
-                        <td class="left">
-                            balance:
-                        </td>
-                        <td class="right">
-                            <?php
-                            echo($users['balance']);
-                            ?>
-
-                        </td>
-                    </tr> -->
-                    </table>
-                    </div>
-
-                <?php
-            }
-        ?>
-    </div>
-    <div>
-        <p id="pagenum">Page 0 of 0</p>
-        <button id="prev" onclick="page(-1)">&lt;&lt;previous page</button>
-        <button id="next" onclick="page(1)">next page>></button>
-    </div>
        <!-- <p>eeeeeeeeeeeeeeaeea</p> -->
 
 

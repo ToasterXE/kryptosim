@@ -34,7 +34,6 @@
 
 
 td{
-    background: transparent;
     text-align: left;
     padding-bottom: 10px;
     padding-top: 10px;
@@ -79,55 +78,6 @@ td{
 }
 
 table{
-    background: transparent;
     margin: 10%;
     width: 64%;
-}
-
-table *:not(button){
-    background: transparent;
-}
-
-
-.userliste{
-    display: flex;
-    flex-wrap: wrap;
-    /* align-items: center; */
-    justify-content: center;
-}
-.useritem{
-    display: flex;
-    width: 30%;
-    margin: 10px;
-    justify-content: center;
-    transition: 200ms;
-}
-
-.useritem:hover{
-    background-color: var(--bg_heller);
-    transition: 20ms;
-}
-
-.tablebutton{
-    box-sizing: border-box;
-    width: max-content;
-    padding: 6px 20px;
-    margin-left: 20px;
-}
-
-.forms{
-    display: flex;
-    justify-content: space-between;
-}
-
-.forms p{
-    margin: 10px 10px;
-}
-
-.hidden{
-    display: none;
-}
-button:disabled{
-        opacity: 0.6;
-        cursor: not-allowed;
 }
