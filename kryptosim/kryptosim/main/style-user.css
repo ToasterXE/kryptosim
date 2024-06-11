@@ -10,7 +10,7 @@
 }
 
 .main div{
-    width: 50%;
+    width: 100%;
     align-items: center;
     justify-content: center;
     display: flex;
@@ -23,6 +23,7 @@
 
 .main{
     display: flex;
+    flex-wrap: wrap;
 }
 
 
@@ -78,10 +79,17 @@ td{
 
 }
 
+.bigtable *{
+    font-size: 20pt;
+
+}
+
 table{
     background: transparent;
-    margin: 10%;
-    width: 64%;
+    margin: 40px;
+    
+
+    width: 80%;
 }
 
 table *:not(button){
@@ -97,11 +105,30 @@ table *:not(button){
 }
 .useritem{
     display: flex;
-    width: 30%;
+    width: 45%;
     margin: 10px;
     justify-content: center;
     transition: 200ms;
 }
+
+@media (min-width: 1000px){
+    .bigtable *{
+        font-size: 12pt;
+    }
+    .useritem{
+        width: 30%;
+    }
+
+    .main div{
+        width: 50%;
+    }
+
+    table{
+        margin: 10%;
+        width: 64%;
+    }
+}
+
 
 .useritem:hover{
     background-color: var(--bg_heller);

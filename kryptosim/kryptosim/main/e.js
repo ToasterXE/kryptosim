@@ -26,16 +26,16 @@ function copy(id){
 
 }
 
-async function fixinput(event){
+async function fixinput(event, keyid = "key", spaceid = "space"){
   try {
     event.preventDefault();
     const clipboardContents = await navigator.clipboard.readText();
-    var currentfeld = document.getElementById("key");
+    var currentfeld = document.getElementById(keyid);
     currentfeld.value = "";
     for (const item of clipboardContents) {
         currentfeld.value += item;
         if(item == " "){
-          currentfeld = document.getElementById("space");
+          currentfeld = document.getElementById(spaceid);
           currentfeld.value = "";
         }
         

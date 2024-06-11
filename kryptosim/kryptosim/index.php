@@ -38,8 +38,9 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
        
         <a href="/index"><button>home</button></a>
         <a href="/blockchain"><button>blockchain</button></a>
-        <a href="/register"><button>register</button></a>
+        <a href="/pool"><button>pool</button></a>
         <a href="/message"><button>encrypt/decrypt</button></a>
+        <a href="/register"><button>register</button></a>
 
 
         <?php
@@ -71,6 +72,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
             
             else{
                 ?>
+                <div class="transparent">
                 <button onclick="showlogin()">login</button>
                 <div id="dtl" class="dropdownlogin">
                     <form action="?login=1" method="post" id="loginform">
@@ -84,6 +86,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                         <br>
                         <button type="submit" name="loginbutton">login</button>
                     </form>
+                </div>
                 </div>
                 <?php
             }

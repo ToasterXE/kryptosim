@@ -1,0 +1,60 @@
+
+.main{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.message{
+    width: 80%;
+    margin: 20px 0px;
+}
+
+.forms{
+    display: flex;
+    justify-content: space-around;
+}
+
+.emph{
+    color: var(--highlight);
+}
+
+.message .information{
+    display: flex;
+}
+.message .information p{
+    text-align: left;
+}
+
+.message .options{
+    display: flex;
+}
+
+.text{
+    text-wrap: wrap;
+    overflow-wrap: break-word;
+}
+
+.options *{
+    margin: 0px;
+}
+
+.information * {
+    margin: 5px;
+}
+
+.hidden{
+    display: none;
+}
+
+textarea{
+    width: 100%;
+    border-style: solid;    
+    border-color: var(--border_2);
+    border-width: 1px;
+    border-radius: 0%;
+    height: 50px;
+    font-size: 18px;
+    overflow-wrap: break-word;
+    margin: 5px 0px;
+    /* overflow: scroll; */
+}

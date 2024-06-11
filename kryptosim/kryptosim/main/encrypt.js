@@ -42,11 +42,21 @@ function encryptmessage(){
     }
 }
 
-function decryptmessage(){
+function decryptmessage(messageid = "message", keyid = "key", spaceid = "space", resultid = "result"){
+    message = document.getElementById(messageid);
+    key_n = document.getElementById(spaceid);
+    key = document.getElementById(keyid);
+    result = document.getElementById(resultid);
     let c = message.value;
     let space = key_n.value;
     let k = key.value;
+    c = c.trim();
 
+    if(!c){
+        c = message.innerText;
+        c = c.trim();
+
+    }
     if(!c || !space || !k){
         result.innerText = "invalid parameters";
     }
@@ -63,12 +73,17 @@ function decryptmessage(){
             console.log(toStr(pow(parseInt(substr), k, space).toString()));
             res_dd += pow(parseInt(substr), k, space).toString();
         }
-
+        if(!res_dd){
+            result.innerText = "invalid paramteres";
+        }
+        else{
+        result.classList.remove("hidden");
         console.log(toStr(res_dd));
         result.innerText = toStr(res_dd);
         let res_d = pow(c, k, space);
         let res_string = toStr(String(res_d));
         // result.innerText = res_string;
+        }
     }
 
 }

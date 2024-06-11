@@ -1,4 +1,9 @@
 <?php
+
+if (!isset($_SERVER['HTTPS'])){
+    header('Location: https://kryptosim.eu/user');
+}
+
 session_start();
 ini_set('display_errors', 1);
 $host_name = 'db5014852654.hosting-data.io';
@@ -32,10 +37,11 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
     <div class="kopfzeile">
 
        
-        <a href="/index"><button>home</button></a>
+    <a href="/index"><button>home</button></a>
         <a href="/blockchain"><button>blockchain</button></a>
-        <a href="/register"><button>register</button></a>
+        <a href="/pool"><button>pool</button></a>
         <a href="/message"><button>encrypt/decrypt</button></a>
+        <a href="/register"><button>register</button></a>
 
         <?php
             if(isset($_GET['login'])) {
@@ -66,6 +72,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
             
             else{
                 ?>
+                <div class="transparent">
                 <button onclick="showlogin()">login</button>
                 <div id="dtl" class="dropdownlogin">
                     <form action="?login=1" method="post" id="loginform">
@@ -79,6 +86,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                         <br>
                         <button type="submit" name="loginbutton">login</button>
                     </form>
+                </div>
                 </div>
                 <?php
             }
@@ -106,7 +114,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                     $user = $statement->fetch();
                    ?>
 
-                <table>
+                <table class="bigtable">
                 <tr>
                     <td class="left">
                         username:
@@ -170,7 +178,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                 <h2>Wallet</h2>    
             
 
-                <table>
+                <table class="bigtable">
                 <tr>
                     <td class="left">
                         public key:
@@ -332,7 +340,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                                         ORDER BY $sortby $order");
             $result = $statement->execute(array());
             $count = 0;
-            while($users = $statement->fetch()){
+            while($messages = $statement->fetch()){
                 $count++;
                 ?>
                 <div class="useritem lightborder">
@@ -343,7 +351,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                         </td>
                         <td class="right">
                             <?php
-                            echo($users['first_name']);
+                            echo($messages['first_name']);
                             ?>
 
                         </td>
@@ -357,7 +365,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                         </td>
                         <td class="right">
                             <?php
-                            echo($users['created_at']);
+                            echo($messages['created_at']);
                             ?>
 
                         </td>
@@ -368,7 +376,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                         </td>
                         <td class="right">
                             <?php
-                            echo($users['id']);
+                            echo($messages['id']);
                             ?>
 
                         </td>
@@ -378,15 +386,15 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                         <td class="left">
                             public key:
                         </td>
-                        <td class="right" id="public_key<?php print($users['id']) ?>">
+                        <td class="right" id="public_key<?php print($messages['id']) ?>">
                             <?php
-                            if($users['key_n']!=0){
-                                echo($users['public_key']." ".$users['key_n']);
+                            if($messages['key_n']!=0){
+                                echo($messages['public_key']." ".$messages['key_n']);
                             }
                             ?>
                         </td>
                         <td class="right">
-                            <button class="tablebutton" onclick="copy('public_key<?php print($users['id']) ?>')">copy</button>
+                            <button class="tablebutton" onclick="copy('public_key<?php print($messages['id']) ?>')">copy</button>
                         </td>
                     </tr>
                     <!-- </tr>
@@ -395,7 +403,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                         </td>
                         <td class="right">
                             <?php
-                            echo($users['balance']);
+                            echo($messages['balance']);
                             ?>
 
                         </td>
