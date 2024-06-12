@@ -124,13 +124,13 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
 
         
             <?php
-                $statement = $pdo->prepare("SELECT * FROM messages");
+                $statement = $pdo->prepare("SELECT * FROM messages ORDER BY date DESC");
                 $result = $statement->execute(array());
                 $count = 0;
                 while($messages = $statement->fetch()){
                     $count++;
                     ?>
-                    <div class="message">
+                    <div class="message <?php if($count%2){ print("tablelight"); }?>">
                         <div class="information">
                             <p style="width: 30%;"><span class="emph">sender:</span>
                                 <?php
