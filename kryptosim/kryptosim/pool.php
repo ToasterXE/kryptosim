@@ -95,6 +95,11 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                 </div>
                 <?php
             }
+            $search = isset($_GET['search']) ? $_GET['search'] : '';
+            if(isset($_POST['usersearch'])){
+                $search = ($_POST['usersearch']);
+            }
+            $search = trim($search);
             ?>
 
             <a href="/user"><button>profile</button></a>
@@ -105,13 +110,13 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
             
                 <div class="forms">
                     <p>search:</p>
-                    <form method="post" style="all: unset" action="?order=<?php print($order); ?>&sort=<?php print($sortby); if(!empty($search)){?>&search=<?php print($search);}?>">
-                        <input class="lightborder" type="text" name="usersearch" placeholder="name, id, key..."></input>
+                    <form method="post" action="?<?php if(!empty($search)){?>search=<?php print($search);}?>">
+                        <input class="lightborder" type="text" name="usersearch" placeholder="sender/reciever key..."></input>
                     </form>
                     <?php
                     if($search != ""){
                         // $search = ($_POST['usersearch']);
-                        ?><p>searching for: </p><p style="margin-left: 0px;" class="highlighted"><?php print($search) ?></p>
+                        ?><p>searching for: <span class="emph"><?php print($search) ?></span></p>
                         <?php
                     }
                     ?>
@@ -124,7 +129,10 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
 
         
             <?php
-                $statement = $pdo->prepare("SELECT * FROM messages ORDER BY date DESC");
+                $statement = $pdo->prepare("SELECT * FROM messages WHERE
+                                            sender LIKE '%{$search}%' OR
+                                            receiver LIKE '%{$search}%' 
+                                            ORDER BY date DESC");
                 $result = $statement->execute(array());
                 $count = 0;
                 while($messages = $statement->fetch()){
