@@ -2,11 +2,13 @@ var cpage = 0;
 var items = document.getElementsByClassName("useritem");
 var itemsperpage = 12;
 
-function page(page){
-var pagenum = document.getElementById("pagenum");
+function page(page, pages = 12, item ="useritem"){
+    itemsperpage = pages;
+    items = document.getElementsByClassName(item);
+    var pagenum = document.getElementById("pagenum");
 
     cpage += page;
-
+    console.log(items.length);
     for(let i = 0; i<items.length; i++){
         if(i>=itemsperpage*cpage && i<itemsperpage*cpage+itemsperpage){
             items[i].classList.remove("hidden");

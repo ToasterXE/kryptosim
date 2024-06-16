@@ -138,16 +138,20 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
             </form>
             
             <h2>new transaction</h2>
-            <form class="sendmsg" action="?post=1" method="post">
+            <form class="sendmsg" action="?postt=1" method="post">
                 <div class="messagefeld">
                     <input required type="text" id="sender_t" name="sender_t" class="smaller" placeholder="sender public key">
                     <input required	type="text" id="receiver_t" name="receiver_t" class="smaller" placeholder="reciever public key">
+
                     <input required type="number" step="0.01" id="sum" name="sum"  placeholder="sum">
                     <button type="button" onclick="generatemessage()">generate tranaction message</button>
                     <textarea readonly required id="transaktiontext" name="transaktiontext" placeholder="transaction message"></textarea>
-                    <input type="text" id="key" placeholder="signature key (1)" onpaste="fixinput(event)">
-                    <input type="text" id="space" placeholder="signature key (2)">
 
+                    <input type="text" id="signkey" class="smaller" placeholder="signature key (1)" onpaste="fixinput(event, 'signkey', 'signspace')">
+                    <input type="text" id="signspace" class="smaller" placeholder="signature key (2)">
+                    <button type="button" onclick="encryptmessage('transaktiontext', 'signkey', 'signspace', 'finalmessage')">sign</button>
+                    <textarea readonly required id="finalmessage" name="finalmessage" placeholder="final message"></textarea>
+                    
                     <button type="submit">post</button>
                 </div>
             </form>
@@ -160,35 +164,21 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
 
 <?php
 
-if(isset($_GET['transaction'])){
+if(isset($_GET['postt'])){
     $error = 0;
-    if(!$_POST['message']){
+    if(!$_POST['finalmessage']){
         $error = 1;
     }
-    $chars = str_split($_POST['message']);
-    foreach ($chars as $c) {
-        if((ord($c)-48)>=10){
-            $error = 1;
-        }
-    }
-
 
     if($error){
         echo("plain text cannot be sent");
     }
     else{
-        $transaktion = $_POST['transaktion'];
-        if($transaktion== "on"){
-            $transaktion = 1;
-        }
-        else{
-            $transaktion = 0;
-        }
 
         $statement = $pdo->prepare("INSERT INTO messages (sender, receiver, text, signed, transaktion) VALUES (:sender, :receiver, :text, :signed, :transaktion)");
-        $result = $statement->execute(array('sender' => $_POST['sender'], 'receiver' => $_POST['receiver'], 'text' => $_POST['message'], 'signed' => $signed, 'transaktion => $transaktion'));
+        $result = $statement->execute(array('sender' => $_POST['sender_t'], 'receiver' => $_POST['receiver_t'], 'text' => $_POST['finalmessage'], 'signed' => 1, 'transaktion' => 1));
         if($result){
-            echo("message sent to pool!");
+            echo("transaction sent to pool!");
         }
     }
 

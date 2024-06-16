@@ -32,11 +32,12 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
         <link rel="icon" type="image/x-icon" href="/main/favicon.ico">
         <script src="main/e.js"></script>
         <script src="main/encrypt.js"></script>
+        <script src="main/page.js"></script>
 
         <title>Kryptosim</title>
         <h1>Message Pool</h1>
     </head>
-    <body onload="init()">
+    <body onload="init(); page(0, 5, 'message')">
 
     <div class="kopfzeile">
 
@@ -138,7 +139,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                 while($messages = $statement->fetch()){
                     $count++;
                     ?>
-                    <div class="message <?php if($count%2){ print("tablelight"); }?>">
+                    <div class="message <?php if($count%2){ print("tablelight"); } if($messages['transaktion']){ print(" transaction");}?>">
                         <div class="information">
                             <p style="width: 30%;"><span class="emph">sender:</span>
                                 <?php
@@ -183,9 +184,12 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                     <?php
                 }
             ?>
-
+            <div style="width: 100%;">
+                <p id="pagenum">Page 0 of 0</p>
+                <button id="prev" onclick="page(-1, 5, 'message')">&lt;&lt;previous page</button>
+                <button id="next" onclick="page(1, 5, 'message')">next page>></button>
+            </div>
         </div>
-
 
     </body>
 </html>

@@ -84,3 +84,9 @@ textarea{
 .options input{
     width: 80%;
 }
+
+.transaction{
+    border-color: var(--highlight);
+    border-width: 3px;
+    border-style: solid;
+}

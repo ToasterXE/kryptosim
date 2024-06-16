@@ -10,7 +10,11 @@ function init(){
     result = document.getElementById("result");
 }
 
-function encryptmessage(){
+function encryptmessage(messageid = "message", keyid = "key", spaceid = "space", resultid = "result"){
+    message = document.getElementById(messageid);
+    key_n = document.getElementById(spaceid);
+    key = document.getElementById(keyid);
+    result = document.getElementById(resultid);
     let m = message.value;
     let space = key_n.value;
     let k = key.value;

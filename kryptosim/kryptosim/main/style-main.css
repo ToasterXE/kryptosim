@@ -247,3 +247,7 @@ label{
     box-sizing: border-box;
     border-width: 1px;
 }
+
+.hidden{
+    display: none;
+}
