@@ -56,7 +56,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
                     $result = $statement->execute();
                     $set = true;
                 }
-                if(!$set){
+                if(!$set and $trans_id != 33){
                     $statement = $pdo->prepare("UPDATE messages SET valid = 1 WHERE id = $trans_id");
                     $result = $statement->execute();
                 }

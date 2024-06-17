@@ -3,6 +3,8 @@ import time
 from bs4 import BeautifulSoup
 import json
 from datetime import datetime
+from hashlib import sha256
+
 
 headers = {'User-Agent': 'Mozilla/5.0'}
 daten = {'test': '1'}

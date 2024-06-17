@@ -101,15 +101,38 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                 $search = ($_POST['usersearch']);
             }
             $search = trim($search);
+            $sortby = isset($_GET['sort']) ? $_GET['sort'] : 0;
             ?>
-
             <a href="/user"><button>profile</button></a>
 
         </div>
-       
-            <div class="search" style="width: 100%;">
+        <div class="search" style="width: 100%;">
             
-                <div class="forms">
+            <div class="forms">
+            <form method="post" style="all: unset" action="?sort=<?php print(($sortby) ? 0 : 1 ); if(!empty($search)){?>&search=<?php print($search);}?>">
+
+                <button type="submit" name="transactionsonly" id="transactionsonly">
+                <?php if(isset($_POST['transactionsonly'])){
+                    if($sortby == 1){
+                        ?>
+                        show messages
+                        <?php
+                    }
+                    else if($sortby == 0){
+                        ?>
+                        show transactions
+                        <?php
+                    }
+                }
+                else{
+                    ?>
+                    show transactions
+                    <?php
+                }
+                ?>    
+                </button>
+            </form>
+
                     <p>search:</p>
                     <form method="post" action="?<?php if(!empty($search)){?>search=<?php print($search);}?>">
                         <input class="lightborder" type="text" name="usersearch" placeholder="sender/reciever key..."></input>
@@ -127,7 +150,25 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
             </div>
             
         <div class="main">
-
+            <?php
+                if(isset($_POST['verify'])){
+                    $requestid = $_GET['request'];
+                    ?><p>sending verification data of transaction #<?php echo($requestid)?> to nodes...</p> <?php
+                    
+                    $statement = $pdo->prepare("SELECT * FROM nodes WHERE last_seen >= NOW() - INTERVAL 10 SECOND ORDER BY id");
+                    $result = $statement->execute();
+                    $node = $statement->fetch();
+                    if($node){
+                        $newid = $node['id'];
+                        $statement = $pdo->prepare("UPDATE nodes SET transaction_id = $requestid WHERE id = $newid");
+                        $result = $statement->execute();
+                        $set = true;
+                    }
+                    if(!$set){
+                        ?><p>could not find any available nodes. Try again in a minute.</p><?php
+                    }
+                }
+            ?>
         
             <?php
                 $statement = $pdo->prepare("SELECT * FROM messages WHERE
@@ -136,10 +177,23 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                                             ORDER BY date DESC");
                 $result = $statement->execute(array());
                 $count = 0;
+                $block_wait = 0;
                 while($messages = $statement->fetch()){
+                    if($messages['transaktion'] != $sortby){continue;}
                     $count++;
                     ?>
-                    <div class="message <?php if($count%2){ print("tablelight"); } if($messages['transaktion']){ print(" transaction");}?>">
+                    <div class="message <?php if($messages['valid']){print(" verified");} else if($count%2){ print("tablelight"); if($messages['blockid']!=0){print(" inblock");}else{$block_wait++;}} if($messages['transaktion']){ print(" transaction");}?>">
+                        <?php
+                            if($sortby){
+                                ?>
+                                <p style="margin: 0px;">
+                                    <?php 
+                                    echo("block: ".($messages['blockid'] ? $messages['blockid'] : "waiting for block"));
+                                    ?>
+                                </p>                      
+                                <?php
+                            }                        
+                        ?>
                         <div class="information">
                             <p style="width: 30%;"><span class="emph">sender:</span>
                                 <?php
@@ -179,6 +233,11 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                             <input type="text" id="key<?php print($count); ?>" placeholder="key (1)" onpaste="fixinput(event, 'key<?php print($count); ?>', 'space<?php print($count); ?>')">
                             <input type="text" id="space<?php print($count); ?>" placeholder="key (2)">
                             <button onclick="decryptmessage('text<?php print($count); ?>', 'key<?php print($count); ?>', 'space<?php print($count); ?>', 'result<?php print($count); ?>')">decrypt</button>
+                            <?php if($sortby){ ?>
+                            <form method="post" style="unset:all" action="?sort=<?php print($sortby); if(!empty($search)){?>&search=<?php print($search);}?>&request=<?php print($messages['id'])?>">
+                                <button type="submit" name="verify" id="verify">verify</button>
+                            </form>
+                            <?php } ?>
                         </div>
                     </div>
                     <?php
