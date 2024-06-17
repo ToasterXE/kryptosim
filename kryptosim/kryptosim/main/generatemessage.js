@@ -3,8 +3,7 @@ function generatemessage(){
     let receiver = document.getElementById("receiver_t").value;
     let sum = document.getElementById("sum").value;
     let result = document.getElementById("transaktiontext");
-
-    if(sum == 0){
+    if(parseFloat(sum) <= 0){
         return 0;
     }
 

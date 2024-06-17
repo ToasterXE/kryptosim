@@ -143,7 +143,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                     <input required type="text" id="sender_t" name="sender_t" class="smaller" placeholder="sender public key">
                     <input required	type="text" id="receiver_t" name="receiver_t" class="smaller" placeholder="reciever public key">
 
-                    <input required type="number" step="0.01" id="sum" name="sum"  placeholder="sum">
+                    <input required type="number" step="0.01" id="sum" name="sum" min="0.01" placeholder="sum">
                     <button type="button" onclick="generatemessage()">generate tranaction message</button>
                     <textarea readonly required id="transaktiontext" name="transaktiontext" placeholder="transaction message"></textarea>
 

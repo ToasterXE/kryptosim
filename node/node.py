@@ -62,8 +62,8 @@ def verifyblock(blockdata, t1, t2, t3):
         return 0
     string = prevhash+t1+t2+t3+'{"receiver": "'+ blockjson['miner']+'","text":"'+str(blockjson['reward'])+'->'+blockjson['miner']+'"}'+str(blockjson['pow'])
     string = string.replace("\'","\"")
-    string = string.replace(" ","")
-    hash = (sha256(string.encode('utf-8')).hexdigest())
+    stringhash = string.replace(" ","")
+    hash = (sha256(stringhash.encode('utf-8')).hexdigest())
     
     if(hash != blockjson['hash']):
         return 0
@@ -74,10 +74,39 @@ def verifyblock(blockdata, t1, t2, t3):
     
     with open(file_path, 'a') as file:
         file.write("\n")    
-        file.write(string+" "+hash)
+        file.write(string+" _ "+hash)
 
     return 1
     # print(t1)
+
+def verifyblockchain():
+    file_path = 'blockchain.txt'
+    with open(file_path, 'r') as file:
+        line = file.readline()
+        prevhash=line.split(" ")[1]
+        while(line):
+            line = file.readline()
+            data = line.split(" _ ")
+            if(len(data) != 2):
+                continue
+            dataarr = data[0].split("{")
+            for i in range(1,len(dataarr)):
+                dataarr[i] = "{" + dataarr[i]
+            if(not verifytransaction(dataarr[1]) or not verifytransaction(dataarr[2]) or not verifytransaction(dataarr[3])):
+               return 0
+            if(prevhash.strip() != dataarr[0].strip()):
+                return 0
+            prevhash = data[1]
+            stringhash = data[0].replace(" ","")
+            hash = (sha256(stringhash.encode('utf-8')).hexdigest())
+            if(hash.strip() != prevhash.strip()):
+                return 0
+    
+    file.close()
+
+    return 1
+
+def syncblockchain():
 
 
 # NODEID  = getnodeid()
@@ -122,6 +151,13 @@ try:
                 transaction = BeautifulSoup(ans.text, 'html.parser').find(id="block_id")
                 print(transaction.text.strip())
 
+        if(time.time()-lasttime > 5):
+            if(verifyblockchain()):
+                print("blockchain integry verified successfully")
+            else:
+                
+                print("error in blockchain integry: syncing blockchain")
+                syncblockchain()
 
 except(KeyboardInterrupt):
     pass
