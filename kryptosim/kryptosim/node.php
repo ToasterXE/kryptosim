@@ -31,12 +31,6 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
         $statement = $pdo->prepare("SELECT * FROM nodes WHERE id = :id");
         $result = $statement->execute(array('id'=>$id));
         $node = $statement->fetch();
-
-        if($node['block_id'] != 0){
-            ?>
-            <p id="block_id"> <?php echo($node['block_id'])?></p>
-            <?php
-        }
         if($node['transaction_id'] != 0){
             $trans_id = $node['transaction_id'];
 
@@ -47,7 +41,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
                 $statement = $pdo->prepare("UPDATE nodes SET transaction_id = 0 WHERE id = $id");
                 $result = $statement->execute();
                 $set = false;
-                $statement = $pdo->prepare("SELECT * FROM nodes WHERE id > $id and last_seen >= NOW() - INTERVAL 10 SECOND");
+                $statement = $pdo->prepare("SELECT * FROM nodes WHERE id > $id and last_seen >= NOW() - INTERVAL 10 SECOND  and transaction_id = 0");
                 $result = $statement->execute();
                 $newnode = $statement->fetch();
                 if($newnode){
@@ -74,11 +68,67 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
             }
         }
 
+        if($node['block_id'] != 0){
+            $blockid = $node['block_id'];
+            if(isset($_POST['verifyblock'])){
+                if($_POST['verifyblock']){
+                    ?><p id="block_id"><?php
+                    $statement = $pdo->prepare("UPDATE nodes SET block_id = 0 WHERE id = $id");
+                    $result = $statement->execute();
+                    $set = false;
+                    $statement = $pdo->prepare("SELECT * FROM nodes WHERE id > $id and last_seen >= NOW() - INTERVAL 10 SECOND  and block_id = 0");
+                    $result = $statement->execute();
+                    $newnode = $statement->fetch();
+                    if($newnode){
+                        $newid = $newnode['id'];
+                        $statement = $pdo->prepare("UPDATE nodes SET block_id = $blockid WHERE id = $newid");
+                        $result = $statement->execute();
+                        $set = true;
+                        echo("answer to node #{$id}: sending block to next node");
+                    }
+                    if(!$set){
+                        echo("answer to node #{$id}: block verified!");
+                        $statement = $pdo->prepare("UPDATE blocks SET valid = 1 WHERE id = $blockid");
+                        $result = $statement->execute();
+                    }
+                }
+                ?>
+                    </p>
+                <?php
+
+            }
+            else{
+                $statement = $pdo->prepare("SELECT * FROM blocks WHERE id = $blockid");
+                $result = $statement->execute();
+                $block = $statement->fetch(PDO::FETCH_ASSOC);
+                $json = json_encode($block);
+                ?>
+                <p id="block_id"> <?php echo($json) ?> </p>
+                <?php
+                $t1 = $block['t1_id'];
+                $t2 = $block['t2_id'];
+                $t3 = $block['t3_id'];
+                echo("e".$t1);
+                $statement = $pdo->prepare("SELECT id, sender, receiver, text, date FROM messages WHERE id IN ($t1, $t2, $t3) ORDER BY id DESC");    
+                $result = $statement->execute();
+                $count = 1;
+                while($t = $statement->fetch(PDO::FETCH_ASSOC)){
+                    $json = json_encode(($t));
+                    ?>
+                    <p id="t<?php print($count)?>"> <?php echo($json) ?> </p>
+                    <?php
+                    $count++;
+                }
+        }
+            
+        }
+
     };
     ?>
     <form action="?registernode">
         <input type="text" id="nodeid" name="nodeid">
         <input type="text" id="verify" name="verify">
+        <input type="text" id="verifyblock" name="verifyblock">
     </form>
 
 </body>
