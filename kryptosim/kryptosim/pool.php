@@ -177,21 +177,29 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                                             ORDER BY date DESC");
                 $result = $statement->execute(array());
                 $count = 0;
-                $block_wait = 0;
+                $block_wait =  [];
                 while($messages = $statement->fetch()){
                     if($messages['transaktion'] != $sortby){continue;}
                     $count++;
                     ?>
-                    <div class="message <?php if($messages['valid']){print(" verified");} else if($count%2){ print("tablelight"); if($messages['blockid']!=0){print(" inblock");}else{$block_wait++;}} if($messages['transaktion']){ print(" transaction");}?>">
+                    <div class="message <?php if($messages['valid']){print(" verified");} else if($count%2){ print("tablelight");} if($messages['blockid']!=0){print(" inblock");} if($messages['transaktion']){ print(" transaction");}?>">
                         <?php
                             if($sortby){
                                 ?>
+                                <p style="margin: 0px;">
+                                    <?php 
+                                    echo("status: ".($messages['valid'] ? "verified" : "waiting for verification"));
+                                    ?>
+                                </p>   
                                 <p style="margin: 0px;">
                                     <?php 
                                     echo("block: ".($messages['blockid'] ? $messages['blockid'] : "waiting for block"));
                                     ?>
                                 </p>                      
                                 <?php
+                                if($messages['valid'] && $messages['blockid'] == 0){
+                                    $block_wait[] = $messages['id'];
+                                }
                             }                        
                         ?>
                         <div class="information">
@@ -242,7 +250,15 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                     </div>
                     <?php
                 }
+                if(count($block_wait)>= 3){
+                    ?>  
+                    <form style="width: 100%;" method="post" action="block.php?t1=<?php print($block_wait[0])?>&t2=<?php print($block_wait[1])?>&t3=<?php print($block_wait[2])?>">
+                        <button type="submit" >create new block</button>
+                    </form>
+                    <?php
+                }
             ?>
+            
             <div style="width: 100%;">
                 <p id="pagenum">Page 0 of 0</p>
                 <button id="prev" onclick="page(-1, 5, 'message')">&lt;&lt;previous page</button>

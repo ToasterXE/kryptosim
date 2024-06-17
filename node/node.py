@@ -46,8 +46,42 @@ def toStr(number):
         res += chr(int(code)-68)
     return res
 
+def verifyblock(blockdata, t1, t2, t3):
+    file_path = 'blockchain.txt'
+    with open(file_path, 'r') as file:
+        data = file.read()
+    file.close()
+    data = data.split(" ")
+    prevhash = data[-1]
+    blockjson = json.loads(blockdata)
+    t1json = json.loads(t1)
+    t2json = json.loads(t2)
+    t3json = json.loads(t3)
+
+    if(prevhash != blockjson['header']):
+        return 0
+    string = prevhash+t1+t2+t3+'{"receiver": "'+ blockjson['miner']+'","text":"'+str(blockjson['reward'])+'->'+blockjson['miner']+'"}'+str(blockjson['pow'])
+    string = string.replace("\'","\"")
+    string = string.replace(" ","")
+    hash = (sha256(string.encode('utf-8')).hexdigest())
+    
+    if(hash != blockjson['hash']):
+        return 0
+    
+    for i in range(0,6):
+        if(hash[i] != "0"):
+            return 0
+    
+    with open(file_path, 'a') as file:
+        file.write("\n")    
+        file.write(string+" "+hash)
+
+    return 1
+    # print(t1)
+
+
 # NODEID  = getnodeid()
-NODEID = 6
+NODEID = 8
 print(NODEID)
 run = True
 
@@ -61,6 +95,7 @@ try:
             print("ping")
             ans = session.post('https://kryptosim.eu/node', headers=headers, data=nodedata)
             transaction = BeautifulSoup(ans.text, 'html.parser').find(id="transaction_id")
+            block = BeautifulSoup(ans.text, 'html.parser').find(id="block_id")
             if(transaction):
                 print(transaction.text.strip())
                 if(verifytransaction(transaction.text.strip())):
@@ -72,6 +107,21 @@ try:
                 ans = session.post('https://kryptosim.eu/node', headers=headers, data=verify)
                 transaction = BeautifulSoup(ans.text, 'html.parser').find(id="transaction_id")
                 print(transaction.text.strip())
+
+            if(block):
+                print("received block")
+                t1 = BeautifulSoup(ans.text, 'html.parser').find(id="t1")
+                t2 = BeautifulSoup(ans.text, 'html.parser').find(id="t2")
+                t3 = BeautifulSoup(ans.text, 'html.parser').find(id="t3")
+                if(verifyblock(block.text.strip(), t1.text.strip(), t2.text.strip(), t3.text.strip())):
+                    verify = {'nodeid': NODEID, 'verifyblock': 1}
+                    print("block verified!")
+                else:
+                    verify = {'nodeid': NODEID, 'verifyblock': 0}
+                ans = session.post('https://kryptosim.eu/node', headers=headers, data=verify)
+                transaction = BeautifulSoup(ans.text, 'html.parser').find(id="block_id")
+                print(transaction.text.strip())
+
 
 except(KeyboardInterrupt):
     pass

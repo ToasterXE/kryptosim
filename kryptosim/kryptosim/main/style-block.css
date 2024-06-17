@@ -1,0 +1,38 @@
+:root{
+
+    --border_1: hsl(203, 42%, 50%);
+    --border_2: hsl(203, 72%, 72%);
+    --bg_hell: hsl(203, 42%, 29%);
+    --bg_heller: hsl(203, 42%, 19%);
+    --bg_dunkel: hsl(201, 44%, 6%);
+    --verifiedcol: hsl(140, 80%, 30%);
+}
+
+.block{
+    margin: 20px;
+    border-style: solid;
+    border-color: var(--border_2);
+    border-width: 1px;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.block div{
+    background-color: transparent;
+    width: 50%;
+}
+
+
+.block .header{
+    width: 80%;
+    margin: 20px 0px;
+}
+
+.transactions textarea{
+    width: 100%;
+    text-align: left;
+}
