@@ -106,9 +106,12 @@ def verifyblockchain():
 
     return 1
 
-def syncblockchain():
-
-
+def sendblockchain():
+    file_path = 'blockchain.txt'
+    with open(file_path, 'r') as file:
+        data = file.read()
+    nodedata = {'nodeid': NODEID, 'blockchaindata': data.strip()}
+    session.post('https://kryptosim.eu/node', headers=headers, data=nodedata)
 # NODEID  = getnodeid()
 NODEID = 8
 print(NODEID)
@@ -121,6 +124,7 @@ try:
     while(run):
         if(time.time()-lasttime > 5):
             lasttime = time.time()
+            sendblockchain()
             print("ping")
             ans = session.post('https://kryptosim.eu/node', headers=headers, data=nodedata)
             transaction = BeautifulSoup(ans.text, 'html.parser').find(id="transaction_id")
@@ -157,7 +161,7 @@ try:
             else:
                 
                 print("error in blockchain integry: syncing blockchain")
-                syncblockchain()
+                # syncblockchain()
 
 except(KeyboardInterrupt):
     pass

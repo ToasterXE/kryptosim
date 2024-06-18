@@ -122,13 +122,25 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
         }
             
         }
+        ?>
+        <p id="feedback">e
+        <?php
+        if(isset($_POST['blockchaindata'])){
+            $data = trim($_POST['blockchaindata']);
+            $statement = $pdo->prepare("UPDATE nodes SET blockchaindata = :data WHERE id = $id");
+            $result = $statement->execute(array('data' =>$data));
 
+        }
+        ?>
+        </p>
+        <?php
     };
     ?>
     <form action="?registernode">
         <input type="text" id="nodeid" name="nodeid">
         <input type="text" id="verify" name="verify">
         <input type="text" id="verifyblock" name="verifyblock">
+        <input type="text" id="blockchaindata" name="blockchaindata">
     </form>
 
 </body>
