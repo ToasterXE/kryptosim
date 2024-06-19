@@ -123,7 +123,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
             
         }
         ?>
-        <p id="feedback">e
+        <p id="feedback">
         <?php
         if(isset($_POST['blockchaindata'])){
             $data = trim($_POST['blockchaindata']);
@@ -131,9 +131,22 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
             $result = $statement->execute(array('data' =>$data));
 
         }
+
+        if(isset($_POST['requestdata'])){
+            $statement = $pdo->prepare("SELECT blockchaindata FROM nodes WHERE last_seen >= NOW() - INTERVAL 20 HOUR");
+            $result = $statement->execute();
+            $returndata = "";
+            while($currentdata = $statement->fetch(PDO::FETCH_ASSOC)){
+                $returndata = $returndata.",".  json_encode($currentdata);
+            }
+            echo($returndata);
+        }
+
         ?>
         </p>
         <?php
+
+
     };
     ?>
     <form action="?registernode">
@@ -141,6 +154,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
         <input type="text" id="verify" name="verify">
         <input type="text" id="verifyblock" name="verifyblock">
         <input type="text" id="blockchaindata" name="blockchaindata">
+        <input type="text" id="requestdata" name="requestdata">
     </form>
 
 </body>

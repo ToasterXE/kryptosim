@@ -113,20 +113,22 @@ def sendblockchain():
     nodedata = {'nodeid': NODEID, 'blockchaindata': data.strip()}
     session.post('https://kryptosim.eu/node', headers=headers, data=nodedata)
 # NODEID  = getnodeid()
-NODEID = 8
+NODEID = 6
 print(NODEID)
 run = True
 
-nodedata = {'nodeid': NODEID}
+nodedata = {'nodeid': NODEID, 'requestdata': "1"}
 
 try:
     lasttime = time.time()
     while(run):
         if(time.time()-lasttime > 5):
+            # sendblockchain()
             lasttime = time.time()
-            sendblockchain()
             print("ping")
             ans = session.post('https://kryptosim.eu/node', headers=headers, data=nodedata)
+            e = BeautifulSoup(ans.text, 'html.parser').find(id="feedback")
+            print(e.text.strip())
             transaction = BeautifulSoup(ans.text, 'html.parser').find(id="transaction_id")
             block = BeautifulSoup(ans.text, 'html.parser').find(id="block_id")
             if(transaction):
@@ -155,12 +157,13 @@ try:
                 transaction = BeautifulSoup(ans.text, 'html.parser').find(id="block_id")
                 print(transaction.text.strip())
 
-        if(time.time()-lasttime > 5):
-            if(verifyblockchain()):
-                print("blockchain integry verified successfully")
-            else:
+        # if(time.time()-lasttime > 5):
+        #     lasttime = time.time()
+        #     if(verifyblockchain()):
+        #         print("blockchain integry verified successfully")
+        #     else:
                 
-                print("error in blockchain integry: syncing blockchain")
+        #         print("error in blockchain integry: syncing blockchain")
                 # syncblockchain()
 
 except(KeyboardInterrupt):
