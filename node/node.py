@@ -11,7 +11,7 @@ daten = {'test': '1'}
 
 session = requests.Session()
 NODEID = 8
-file_path = 'blockchaintest.txt'
+file_path = 'blockchain.txt'
 nodedata = {}
 # NODEID  = getnodeid()
 run = True
@@ -126,7 +126,7 @@ def syncdata():
         chain = file.read()
     file.close()
     length = len(chain)
-    maxseen = ""
+    maxseen = chain
     maxseenval = 0
     seen = {}
     for d in dataarr:
@@ -146,9 +146,6 @@ def syncdata():
     
     if(maxseenval > 1):
         print("blockchain synchronised with network successfully")
-    else:
-        print("fatal network error :(")
-        run = False
 
 def init():
     global NODEID, run
@@ -159,6 +156,7 @@ def init():
         file.write(blockchaindata)
         file.close()
     syncdata()
+
     if(verifyblockchain()):
         sendblockchain()
     else:
