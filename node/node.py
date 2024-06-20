@@ -177,7 +177,7 @@ try:
             ans = BeautifulSoup(session.post('https://kryptosim.eu/node', headers=headers, data=nodedata).text, 'html.parser')
             feedback = ans.find(id="feedback")
 
-            if(feedback):
+            if(feedback.text.strip()):
                 print(feedback.text.strip())
 
             transaction = ans.find(id="transaction_id")
