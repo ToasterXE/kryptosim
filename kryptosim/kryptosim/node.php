@@ -133,11 +133,11 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
         }
 
         if(isset($_POST['requestdata'])){
-            $statement = $pdo->prepare("SELECT blockchaindata FROM nodes WHERE last_seen >= NOW() - INTERVAL 20 HOUR");
+            $statement = $pdo->prepare("SELECT blockchaindata FROM nodes WHERE last_seen >= NOW() - INTERVAL 20 HOUR and blockchaindata != '' ");
             $result = $statement->execute();
-            $returndata = "";
+            $returndata = " ";
             while($currentdata = $statement->fetch(PDO::FETCH_ASSOC)){
-                $returndata = $returndata.",".  json_encode($currentdata);
+                $returndata = $returndata." DATA: ". ($currentdata['blockchaindata']);
             }
             echo($returndata);
         }

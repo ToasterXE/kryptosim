@@ -10,6 +10,11 @@ headers = {'User-Agent': 'Mozilla/5.0'}
 daten = {'test': '1'}
 
 session = requests.Session()
+NODEID = 8
+file_path = 'blockchaintest.txt'
+nodedata = {}
+# NODEID  = getnodeid()
+run = True
 
 def getnodeid():
     return BeautifulSoup(session.post('https://kryptosim.eu/registernode',headers=headers, data=daten).text, 'html.parser').find(id="responsetonode").text.strip()
@@ -77,10 +82,9 @@ def verifyblock(blockdata, t1, t2, t3):
         file.write(string+" _ "+hash)
 
     return 1
-    # print(t1)
 
 def verifyblockchain():
-    file_path = 'blockchain.txt'
+    
     with open(file_path, 'r') as file:
         line = file.readline()
         prevhash=line.split(" ")[1]
@@ -112,59 +116,107 @@ def sendblockchain():
         data = file.read()
     nodedata = {'nodeid': NODEID, 'blockchaindata': data.strip()}
     session.post('https://kryptosim.eu/node', headers=headers, data=nodedata)
-# NODEID  = getnodeid()
-NODEID = 6
-print(NODEID)
-run = True
 
-nodedata = {'nodeid': NODEID, 'requestdata': "1"}
+def syncdata():
+    requestdata = {'nodeid': NODEID, 'requestdata': 1}
+    ans = BeautifulSoup(session.post('https://kryptosim.eu/node', headers=headers, data=requestdata).text, 'html.parser')
+    data = ans.find(id="feedback").text.strip()
+    dataarr = data.split("DATA: ")
+    with open(file_path, "r") as file:
+        chain = file.read()
+    file.close()
+    length = len(chain)
+    maxseen = ""
+    maxseenval = 0
+    seen = {}
+    for d in dataarr:
+        if(len(d) < length): continue
+        d = d[:length].strip()
+        if d in seen:
+            seen[d] += 1
+        else:
+            seen[d] = 1
+        if(seen[d]> maxseenval):
+            maxseenval = seen[d]
+            maxseen = d
+
+    with open(file_path, "w") as file:
+        file.write(maxseen)
+        file.close()
+    
+    if(maxseenval > 1):
+        print("blockchain synchronised with network successfully")
+    else:
+        print("fatal network error :(")
+        run = False
+
+def init():
+    global NODEID, run
+    initmsg = BeautifulSoup(session.post('https://kryptosim.eu/registernode',headers=headers, data=daten).text, 'html.parser')  
+    NODEID = initmsg.find(id="responsetonode").text.strip()
+    blockchaindata = initmsg.find(id="blockchaindata").text.strip()
+    with open(file_path, "w") as file:
+        file.write(blockchaindata)
+        file.close()
+    syncdata()
+    if(verifyblockchain()):
+        sendblockchain()
+    else:
+        print("fatal error in node network :(")
+        run = False
+    nodedata['nodeid'] = NODEID
+    print("initialisation successful")
+
+init()
+print("id: " + NODEID)
 
 try:
     lasttime = time.time()
     while(run):
         if(time.time()-lasttime > 5):
-            # sendblockchain()
             lasttime = time.time()
             print("ping")
-            ans = session.post('https://kryptosim.eu/node', headers=headers, data=nodedata)
-            e = BeautifulSoup(ans.text, 'html.parser').find(id="feedback")
-            print(e.text.strip())
-            transaction = BeautifulSoup(ans.text, 'html.parser').find(id="transaction_id")
-            block = BeautifulSoup(ans.text, 'html.parser').find(id="block_id")
+            ans = BeautifulSoup(session.post('https://kryptosim.eu/node', headers=headers, data=nodedata).text, 'html.parser')
+            feedback = ans.find(id="feedback")
+
+            if(feedback):
+                print(feedback.text.strip())
+
+            transaction = ans.find(id="transaction_id")
+            block = ans.find(id="block_id")
+            
             if(transaction):
                 print(transaction.text.strip())
                 if(verifytransaction(transaction.text.strip())):
                     print("transaction verified")
-                    verify = {'nodeid': NODEID, 'verify': 1}
+                    verifydata = {'nodeid': NODEID, 'verify': 1}
                 else:
                     print("transaction failed validation test")
-                    verify = {'nodeid': NODEID, 'verify': 0}
-                ans = session.post('https://kryptosim.eu/node', headers=headers, data=verify)
-                transaction = BeautifulSoup(ans.text, 'html.parser').find(id="transaction_id")
-                print(transaction.text.strip())
+                    verifydata = {'nodeid': NODEID, 'verify': 0}
+                ans = BeautifulSoup(session.post('https://kryptosim.eu/node', headers=headers, data=verifydata).text, 'html.parser')
+                verifyfeedback = ans.find(id="transaction_id")
+                print(verifyfeedback.text.strip())
 
             if(block):
                 print("received block")
-                t1 = BeautifulSoup(ans.text, 'html.parser').find(id="t1")
-                t2 = BeautifulSoup(ans.text, 'html.parser').find(id="t2")
-                t3 = BeautifulSoup(ans.text, 'html.parser').find(id="t3")
-                if(verifyblock(block.text.strip(), t1.text.strip(), t2.text.strip(), t3.text.strip())):
-                    verify = {'nodeid': NODEID, 'verifyblock': 1}
+                t1 = ans.find(id="t1").text.strip()
+                t2 = ans.find(id="t2").text.strip()
+                t3 = ans.find(id="t3").text.strip()
+                if(verifyblock(block.text.strip(), t1, t2, t3)):
+                    sendblockchain()
+                    verifydata = {'nodeid': NODEID, 'verifyblock': 1}
                     print("block verified!")
                 else:
-                    verify = {'nodeid': NODEID, 'verifyblock': 0}
-                ans = session.post('https://kryptosim.eu/node', headers=headers, data=verify)
-                transaction = BeautifulSoup(ans.text, 'html.parser').find(id="block_id")
-                print(transaction.text.strip())
+                    syncdata()
+                    if(verifyblock(block.text.strip(), t1, t2, t3)):
+                        sendblockchain()
+                        print("blockchain updated and block verified")
+                    else:
+                        verifydata = {'nodeid': NODEID, 'verifyblock': 0}
+                ans = BeautifulSoup(session.post('https://kryptosim.eu/node', headers=headers, data=verifydata).text, 'html.parser')
+                verifyfeedback = ans.find(id="block_id")
+                print(verifyfeedback.text.strip())
 
-        # if(time.time()-lasttime > 5):
-        #     lasttime = time.time()
-        #     if(verifyblockchain()):
-        #         print("blockchain integry verified successfully")
-        #     else:
-                
-        #         print("error in blockchain integry: syncing blockchain")
-                # syncblockchain()
 
 except(KeyboardInterrupt):
     pass
