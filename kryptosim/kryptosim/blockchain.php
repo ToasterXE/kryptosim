@@ -130,33 +130,33 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
 
                         //test
 
-                        $transactionids = [];
-                        $deltabalance = [];
-                        $statement = $pdo->prepare("SELECT t1_id, t2_id, t3_id FROM blocks WHERE valid = 1");
-                        $statement->execute();
-                        while($values = $statement->fetch(PDO::FETCH_NUM)){
-                            foreach($values as $v){
-                                array_push($transactionids, $v);
-                            }
-                        }
-                        $where_in = implode(',', $transactionids);
-                        $statement = $pdo->prepare("SELECT sender, receiver, sum FROM messages WHERE id IN ($where_in)");
-                        $statement->execute();
-                        while($action = $statement->fetch(PDO::FETCH_ASSOC)){
-                            updatebalance($action['sum'],$action['receiver']);
-                            updatebalance(-$action['sum'],$action['sender']);
-                        }
-                        $statement = $pdo->prepare("SELECT reward, miner FROM blocks WHERE valid = 1");
-                        $statement->execute();
-                        while($reward = $statement->fetch()){
-                            updatebalance($reward['reward'], $reward['miner']);
-                        }
+                        // $transactionids = [];
+                        // $deltabalance = [];
+                        // $statement = $pdo->prepare("SELECT t1_id, t2_id, t3_id FROM blocks WHERE valid = 1");
+                        // $statement->execute();
+                        // while($values = $statement->fetch(PDO::FETCH_NUM)){
+                        //     foreach($values as $v){
+                        //         array_push($transactionids, $v);
+                        //     }
+                        // }
+                        // $where_in = implode(',', $transactionids);
+                        // $statement = $pdo->prepare("SELECT sender, receiver, sum FROM messages WHERE id IN ($where_in)");
+                        // $statement->execute();
+                        // while($action = $statement->fetch(PDO::FETCH_ASSOC)){
+                        //     updatebalance($action['sum'],$action['receiver']);
+                        //     updatebalance(-$action['sum'],$action['sender']);
+                        // }
+                        // $statement = $pdo->prepare("SELECT reward, miner FROM blocks WHERE valid = 1");
+                        // $statement->execute();
+                        // while($reward = $statement->fetch()){
+                        //     updatebalance($reward['reward'], $reward['miner']);
+                        // }
 
-                        foreach(array_keys($deltabalance) as $key){
-                            $keys = explode(" ",$key);
-                            $statement = $pdo->prepare("UPDATE benutzer SET balance = $deltabalance[$key] WHERE public_key = $keys[0] AND key_n = $keys[1]");
-                            $statement->execute();
-                        }
+                        // foreach(array_keys($deltabalance) as $key){
+                        //     $keys = explode(" ",$key);
+                        //     $statement = $pdo->prepare("UPDATE benutzer SET balance = $deltabalance[$key] WHERE public_key = $keys[0] AND key_n = $keys[1]");
+                        //     $statement->execute();
+                        // }
 
                     ?>
         </div>
