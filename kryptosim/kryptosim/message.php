@@ -175,8 +175,8 @@ if(isset($_GET['postt'])){
     }
     else{
 
-        $statement = $pdo->prepare("INSERT INTO messages (sender, receiver, text, signed, transaktion) VALUES (:sender, :receiver, :text, :signed, :transaktion)");
-        $result = $statement->execute(array('sender' => $_POST['sender_t'], 'receiver' => $_POST['receiver_t'], 'text' => $_POST['finalmessage'], 'signed' => 1, 'transaktion' => 1));
+        $statement = $pdo->prepare("INSERT INTO messages (sender, receiver, text, signed, transaktion, sum) VALUES (:sender, :receiver, :text, :signed, :transaktion, :sum)");
+        $result = $statement->execute(array('sender' => $_POST['sender_t'], 'receiver' => $_POST['receiver_t'], 'text' => $_POST['finalmessage'], 'signed' => 1, 'transaktion' => 1, 'sum' => $_POST['sum']));
         if($result){
             echo("transaction sent to pool!");
         }

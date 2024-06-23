@@ -168,53 +168,49 @@ def init():
 init()
 print("id: " + NODEID)
 
-try:
-    lasttime = time.time()
-    while(run):
-        if(time.time()-lasttime > 5):
-            lasttime = time.time()
-            print("ping")
-            ans = BeautifulSoup(session.post('https://kryptosim.eu/node', headers=headers, data=nodedata).text, 'html.parser')
-            feedback = ans.find(id="feedback")
 
-            if(feedback.text.strip()):
-                print(feedback.text.strip())
+while(run):
+    print("ping")
+    ans = BeautifulSoup(session.post('https://kryptosim.eu/node', headers=headers, data=nodedata).text, 'html.parser')
+    feedback = ans.find(id="feedback")
 
-            transaction = ans.find(id="transaction_id")
-            block = ans.find(id="block_id")
-            
-            if(transaction):
-                print(transaction.text.strip())
-                if(verifytransaction(transaction.text.strip())):
-                    print("transaction verified")
-                    verifydata = {'nodeid': NODEID, 'verify': 1}
-                else:
-                    print("transaction failed validation test")
-                    verifydata = {'nodeid': NODEID, 'verify': 0}
-                ans = BeautifulSoup(session.post('https://kryptosim.eu/node', headers=headers, data=verifydata).text, 'html.parser')
-                verifyfeedback = ans.find(id="transaction_id")
-                print(verifyfeedback.text.strip())
+    if(feedback and feedback.text.strip()):
+        print(feedback.text.strip())
 
-            if(block):
-                print("received block")
-                t1 = ans.find(id="t1").text.strip()
-                t2 = ans.find(id="t2").text.strip()
-                t3 = ans.find(id="t3").text.strip()
-                if(verifyblock(block.text.strip(), t1, t2, t3)):
-                    sendblockchain()
-                    verifydata = {'nodeid': NODEID, 'verifyblock': 1}
-                    print("block verified!")
-                else:
-                    syncdata()
-                    if(verifyblock(block.text.strip(), t1, t2, t3)):
-                        sendblockchain()
-                        print("blockchain updated and block verified")
-                    else:
-                        verifydata = {'nodeid': NODEID, 'verifyblock': 0}
-                ans = BeautifulSoup(session.post('https://kryptosim.eu/node', headers=headers, data=verifydata).text, 'html.parser')
-                verifyfeedback = ans.find(id="block_id")
-                print(verifyfeedback.text.strip())
+    transaction = ans.find(id="transaction_id")
+    block = ans.find(id="block_id")
+    
+    if(transaction):
+        print(transaction.text.strip())
+        if(verifytransaction(transaction.text.strip())):
+            print("transaction verified")
+            verifydata = {'nodeid': NODEID, 'verify': 1}
+        else:
+            print("transaction failed validation test")
+            verifydata = {'nodeid': NODEID, 'verify': 0}
+        ans = BeautifulSoup(session.post('https://kryptosim.eu/node', headers=headers, data=verifydata).text, 'html.parser')
+        verifyfeedback = ans.find(id="transaction_id")
+        if(verifyfeedback):
+            print(verifyfeedback.text.strip())
 
-
-except(KeyboardInterrupt):
-    pass
+    if(block):
+        print("received block")
+        t1 = ans.find(id="t1").text.strip()
+        t2 = ans.find(id="t2").text.strip()
+        t3 = ans.find(id="t3").text.strip()
+        if(verifyblock(block.text.strip(), t1, t2, t3)):
+            sendblockchain()
+            verifydata = {'nodeid': NODEID, 'verifyblock': 1}
+            print("block verified!")
+        else:
+            syncdata()
+            if(verifyblock(block.text.strip(), t1, t2, t3)):
+                sendblockchain()
+                print("blockchain updated and block verified")
+            else:
+                verifydata = {'nodeid': NODEID, 'verifyblock': 0}
+        ans = BeautifulSoup(session.post('https://kryptosim.eu/node', headers=headers, data=verifydata).text, 'html.parser')
+        verifyfeedback = ans.find(id="block_id")
+        if(verifyfeedback):
+            print(verifyfeedback.text.strip())
+    time.sleep(4)

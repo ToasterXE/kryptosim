@@ -1,6 +1,3 @@
-
-blocks = document.getElementsByClassName("block");
-console.log(blocks);
 var realhash;
 
 async function update_blocks(){
@@ -31,9 +28,57 @@ async function update_blocks(){
   }
 }
 
-
-
 async function verify_blocks(){
+  var blocks = document.getElementsByClassName("block");
+  // console.log(blocks.length);
+  prevhash = "0";
+  for(let i = blocks.length-1; i>=0; i--){
+    string = "";
+    header = blocks[i].getElementsByClassName("headerid")[0];
+    string += header.textContent.trim();
+    liste = blocks[i].getElementsByClassName("liste")[0];
+    transactions = liste.getElementsByClassName("t");
+
+    for(let j = 0; j<(4-transactions.length); j++){
+      string += "{}";
+    }
+
+
+    for(let j = 0; j<transactions.length; j++){
+      string += transactions[j].value.replace(/(\r\n|\n|\r\s|\s)/gm, '');
+
+    }
+    pow = blocks[i].getElementsByClassName("pow")[0];
+    string += pow.textContent.trim();
+    hashdiv = blocks[i].getElementsByClassName("hash")[0];
+    chash = hashdiv.textContent.trim();
+
+    if(prevhash == header.textContent.trim()){
+      prevhash = chash;
+      header.classList.add("verified");
+      header.classList.remove("invalid");
+    }
+    else{
+      header.classList.remove("verified");
+      header.classList.add("invalid");
+    }
+
+    realhash = hash(string);
+    if((await realhash) == chash && (await realhash).toString().slice(0,6) == "000000"){
+      hashdiv.classList.add("verified");
+      hashdiv.classList.remove("invalid");
+    }
+    else{
+      hashdiv.classList.add("invalid");
+      hashdiv.classList.remove("verified");
+    }
+
+  }
+}
+
+
+
+async function verify_blocks_old(){
   var lasthash = blocks[0].querySelector('#header').textContent;
   var header, headertext, block, headerdiv;
   for(let i = 0; i<blocks.length; i++){

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "picosha.cpp"
+#include "lib/picosha.cpp"
 
 using namespace std;
 using namespace picosha2;
@@ -26,6 +26,7 @@ int main(){
     // cout<<hex_str<<"\n";
     long long pow = 0;
     bool found = 0;
+    cout<<"mining block"<<"\n";
     while(!found){
         string temp = data+to_string(pow);
         hash = vector<unsigned char>(k_digest_size);
@@ -34,4 +35,6 @@ int main(){
         pow++;
     }
     cout<<"solution found: "<<pow-1<<"\n";
+    string s;
+    cin>>s;
 }

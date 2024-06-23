@@ -36,23 +36,23 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
     <div class="register">
         <form action="?register=1" method="post" id="registerform">
             <div class="feld">
-                <label for="email">E-mail:</label>
-                <input type="email" id="email" placeholder="karlos@großratte.de" name="email">         
+                <label for="username">username:</label>
+                <input required autocomplete="off" type="text" id="username" placeholder="username" name="e">
                 <br>
             </div>
             <div class="feld">
-                <label for="username">username:</label>
-                <input type="text" id="username" placeholder="username" name="username">
+                <label for="email">E-mail:</label>
+                <input required  autocomplete="off" type="email" id="email" placeholder="email@example.com" name="email">         
                 <br>
             </div>
             <div class="feld">
                <label for="password">password:</label>
-                <input class="lightborder" type="password" id="password" placeholder="dootlord01" name="password">
+                <input required class="lightborder" type="password" id="password" placeholder="password" name="password">
                 <br>
             </div>
             <div class="feld">
                 <label for="password">password wiederholen: </label>
-                <input type="password" id="password2" placeholder="dootlord01" name="password2">
+                <input required type="password" id="password2" placeholder="password" name="password2">
                 <br>
             </div>
             <button type="submit" name="loginbutton">Register</button>

@@ -92,20 +92,21 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                 <?php
                     $statement = $pdo->prepare("SELECT * FROM blocks");
                     $statement->execute();
-                    while($row = $statement->fetch(PDO::FETCH_ASSOC)){
-                        $id = $row["id"];
-                        $header = $row["header"];
-                        $t1 = $row["t1_id"];
-                        $hash = $row
+                    while($block = $statement->fetch(PDO::FETCH_ASSOC)){
+                        $id = $block["id"];
+                        $header = $block["header"];
+                        $hash = $block
                         ?>
                         <div class='block'>
                             <div class="header">
                                 <div id="header">
-                                <?php echo($header); ?>
+                                <?php echo($block['header()']); ?>
                                 </div>
                             </div>    
                             <div class="liste">
-                                text text text text text text text text text text text text text text text text text text text text text text text text
+                                <textarea readonly name="t1" id="t1"><?php print((isset($_GET['t1'])) ? trim(getjason($block['t1_id'], $pdo)) : "")?></textarea>
+                                <textarea readonly name="t2" id="t2"> </textarea>
+                                <textarea readonly name="t3" id="t3"> </textarea>
                             </div>         
                             <div class="header">
                             <div id="hash">
@@ -124,3 +125,12 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
        
     </body>
 </html>
+<?php
+    function getjason($id, &$pdo){
+        $statement = $pdo->prepare("SELECT id, sender, receiver, text, date FROM messages WHERE id = $id");
+        $result = $statement->execute();
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+        $json = json_encode(($data),JSON_PRETTY_PRINT);
+        return $json;
+    }
+?>

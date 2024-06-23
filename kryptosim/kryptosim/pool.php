@@ -20,6 +20,12 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
     echo $e;
 }
 
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+if(isset($_POST['usersearch'])){
+    $search = ($_POST['usersearch']);
+}
+$search = trim($search);
+$sortby = isset($_GET['sort']) ? $_GET['sort'] : 0;
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +41,15 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
         <script src="main/page.js"></script>
 
         <title>Kryptosim</title>
-        <h1>Message Pool</h1>
+        <?php if($sortby == 1){ ?>
+            
+            <h1>Message Pool</h1>
+        <?php
+        }
+        else{?>
+        <h1>Transaction Pool</h1>
+        <?php
+        }?>
     </head>
     <body onload="init(); page(0, 5, 'message')">
 
@@ -96,12 +110,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                 </div>
                 <?php
             }
-            $search = isset($_GET['search']) ? $_GET['search'] : '';
-            if(isset($_POST['usersearch'])){
-                $search = ($_POST['usersearch']);
-            }
-            $search = trim($search);
-            $sortby = isset($_GET['sort']) ? $_GET['sort'] : 0;
+
             ?>
             <a href="/user"><button>profile</button></a>
 
@@ -182,22 +191,23 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                     if($messages['transaktion'] != $sortby){continue;}
                     $count++;
                     ?>
-                    <div class="message <?php if($messages['valid']){print(" verified");} else if($count%2){ print("tablelight");} if($messages['blockid']!=0){print(" inblock");} if($messages['transaktion']){ print(" transaction");}?>">
+                    
+                    <div class="message <?php if($count%2){ print("tablelight");} if($messages['blockid']!=0){print(" inblock");} if($messages['transaktion']){ print(" transaction");}?>">
                         <?php
                             if($sortby){
                                 ?>
-                                <p style="margin: 0px;">
+                                <p class="<?php print($messages['valid'] ? "verified" : "")?>" style="margin: 0px;">
                                     <?php 
                                     echo("status: ".($messages['valid'] ? "verified" : "waiting for verification"));
                                     ?>
                                 </p>   
                                 <p style="margin: 0px;">
                                     <?php 
-                                    echo("block: ".($messages['blockid'] ? $messages['blockid'] : "waiting for block"));
+                                    echo("block: ".($messages['block_id'] ? $messages['block_id'] : "waiting for block"));
                                     ?>
                                 </p>                      
                                 <?php
-                                if($messages['valid'] && $messages['blockid'] == 0){
+                                if($messages['valid'] && $messages['block_id'] == 0){
                                     $block_wait[] = $messages['id'];
                                 }
                             }                        
@@ -250,14 +260,16 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                     </div>
                     <?php
                 }
+                ?><div class="miniform"><p><?php
+                echo("Transactions waiting for block: ".count($block_wait));?></p><?php
                 if(count($block_wait)>= 3){
                     ?>  
-                    <form style="width: 100%;" method="post" action="block.php?t1=<?php print($block_wait[0])?>&t2=<?php print($block_wait[1])?>&t3=<?php print($block_wait[2])?>">
+                    <form  method="post" action="block.php?t1=<?php print($block_wait[0])?>&t2=<?php print($block_wait[1])?>&t3=<?php print($block_wait[2])?>">
                         <button type="submit" >create new block</button>
                     </form>
                     <?php
                 }
-            ?>
+                ?></div>
             
             <div style="width: 100%;">
                 <p id="pagenum">Page 0 of 0</p>

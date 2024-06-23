@@ -94,6 +94,9 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                 </div>
                 <?php
             }
+
+            $usedtransaction = 0;
+
             ?>
 
             <a href="/user"><button>profile</button></a>
@@ -122,12 +125,13 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                     $pstring = $string.$pow;
                     $pstring = preg_replace('/\s+/', '', $pstring);
                     $hash = hash('sha256', $pstring);
-                    $statement = $pdo->prepare("INSERT INTO blocks (header, t1_id, t2_id, t3_id, miner, reward, pow, hash) VALUES(:header, $t1_id, $t2_id, $t3_id, :miner, $rewardnum, $pow, :hash)");
-                    $result = $statement->execute(array('header' => $header, 'miner' => $miner, 'hash' => $hash));
+                    $reward = preg_replace('/\s+/', '', $reward);
+                    $statement = $pdo->prepare("INSERT INTO blocks (header, t1_id, t2_id, t3_id, miner, reward, pow, hash, rewardtext) VALUES(:header, $t1_id, $t2_id, $t3_id, :miner, $rewardnum, $pow, :hash, :rewardtext)");
+                    $result = $statement->execute(array('header' => $header, 'miner' => $miner, 'hash' => $hash, 'rewardtext' => $reward));
                     $blockid = $pdo->lastInsertId();
 
 
-                    $statement = $pdo->prepare("SELECT * FROM nodes WHERE id > $id and last_seen >= NOW() - INTERVAL 10 SECOND  and transaction_id = 0");
+                    $statement = $pdo->prepare("SELECT * FROM nodes WHERE transaction_id = 0 AND last_seen >= NOW() - INTERVAL 10 SECOND ");
                     $result = $statement->execute();
                     $newnode = $statement->fetch();
                     if($newnode){
@@ -159,6 +163,11 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                     <textarea required readonly type="textarea" id="t1" name="t1" placeholder="t1"><?php print((isset($_GET['t1'])) ? trim(getjason($_GET['t1'], $pdo)) : "")?></textarea>
                     <textarea required readonly type="textarea" id="t2" name="t2" placeholder="t2"><?php print((isset($_GET['t2'])) ? trim(getjason($_GET['t2'], $pdo)) : "")?></textarea>
                     <textarea required readonly type="textarea" id="t3" name="t3" placeholder="t3"><?php print((isset($_GET['t3'])) ? trim(getjason($_GET['t3'], $pdo)) : "")?></textarea>
+                    <?php
+                        if($usedtransaction){
+                            echo("transactions in this block are already included in a block!");
+                        }
+                    ?>
                     <textarea required type="textarea" name="miner" id="miner" placeholder="miner"></textarea>
                     <textarea required readonly type="textarea" name="reward" id="reward" placeholder="reward"></textarea>
                     <button type="button" onclick="getrewardtext()">generate reward text</button>
@@ -168,7 +177,11 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
                 <div class="header">
                     <input required type="textarea" name="POW" placeholder="POW">
                 </div>
-                <button type="submit">send block to nodes</button>
+                <?php if(!$usedtransaction){?>
+                    <button type="submit">send block to nodes</button>
+                <?php
+                }
+                ?>
             </form>
            
         </div>
@@ -177,9 +190,14 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
 
     <?php
     function getjason($id, &$pdo){
-        $statement = $pdo->prepare("SELECT id, sender, receiver, text, date FROM messages WHERE id = $id");
+        $statement = $pdo->prepare("SELECT id, sender, receiver, text, date, block_id FROM messages WHERE id = $id");
         $result = $statement->execute();
         $data = $statement->fetch(PDO::FETCH_ASSOC);
+        if($data['block_id'] != 0){
+            global $usedtransaction;
+            $usedtransaction = 1;
+        }
+        unset($data['block_id']);
         $json = json_encode(($data),JSON_PRETTY_PRINT);
         return $json;
     }

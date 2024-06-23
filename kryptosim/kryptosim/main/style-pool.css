@@ -15,6 +15,7 @@
 .message{
     width: 80%;
     margin: 20px 0px;
+    padding: 0px 20px;
 }
 
 .forms{
@@ -22,10 +23,13 @@
     justify-content: right;
     margin-right: 10%;
     margin-top: 20px;
+    margin-bottom: 20px;
+    column-gap: 20px;
+    
 }
 
-.forms p{
-    margin: auto 20px;
+.forms *{
+    margin: auto 0px;
 }
 
 .emph{
@@ -85,18 +89,24 @@ textarea{
 .options input{
     width: 80%;
 }
-
+/* 
 .transaction{
     border-color: var(--highlight);
     border-width: 3px;
     border-style: solid;
+} */
+.verified{
+    background-color: hsl(125, 56%, 41%);
 }
 
-.verified *{
-    background-color: var(--verifiedcol);
+.miniform{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+    margin: 20px 0px;
 }
 
-.verified {
-    background-color: var(--verifiedcol);
-    padding: 20px 20px;
+.miniform *{
+    margin: auto 0px;
 }

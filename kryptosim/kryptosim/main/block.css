@@ -18,12 +18,11 @@
     border-width: 1px;
     /* background-color: var(--bg_liste); */
     color: rgb(220,220,220);
-    padding: 10px 0px;
+    padding: 10px 10px;
 }
 
-
-.block{
-    width: 20%;
+.block{        
+    width: 70%;
     margin: 0px 20px 20px;
     /* box-shadow: 0 0 10px var(--border_1); */
     background-color: var(--bg_heller);
@@ -35,10 +34,19 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-
 }
 
+@media (min-width: 1000px){
+    .block{
+        width: 30%;
+    }
+}
 
+@media (min-width: 1500px){
+    .block{
+        width: 20%;
+    }
+}
 .header{
     border-top: solid;
     border-bottom: solid;
@@ -71,4 +79,11 @@
 
 .header div{
     padding: 0px 15%;
+}
+
+.liste textarea{
+    width: 100%;
+    text-align: left;
+    border-width: 1px;
+    box-sizing:border-box;
 }

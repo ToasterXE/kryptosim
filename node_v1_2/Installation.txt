@@ -1,0 +1,20 @@
+Folgendes sind Vorschläge für mögliche Schritte zur korrekten Installation des Programms.
+
+--Installation von Python--
+1. python3 installieren: https://www.python.org/downloads/
+2. vscode installieren: https://code.visualstudio.com/download
+3. in vscode python extension installieren (Erste)
+
+--Erstellen eines Venv Environments--
+1. In VSCode Strg+Shift+P: ">Python: Create New Environment"
+2. "Venv" auswählen und Python Interpreter Pfad angeben
+3. Venv aktivieren: Im VSCode Terminal: ".venv/Scripts/activate"
+3.1. Bei Fehlermeldung: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser; erneut versuchen
+
+--Installation von Bibliotheken--
+1. Im VSCode Terminal: pip install request 
+2. Im VSCode Terminal: pip install bs4
+
+--Ausführen des Programms--
+1. Programm in VSCode ausführen. Informationen zum Status finden sich in den Programmausgaben. (Programm benötigt eine Internetverbindung; Nach geplant oder ungeplanter Terminierung sind außer einem Neustart keine weiteren Handlungen erforderlich.)
+2. Fertig! Sie sind nun mit Ihrem eigenen Netzwerkknoten Teil des Verifizierungsnetzwerkes für kryptosim.eu!

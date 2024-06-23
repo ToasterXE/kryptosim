@@ -35,7 +35,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
         </p>
         <p id="blockchaindata">
         <?php
-        $statement = $pdo->prepare("SELECT blockchaindata FROM nodes WHERE last_seen >= NOW() - INTERVAL 1 HOUR and id < $r and blockchaindata != '' ORDER BY id DESC");
+        $statement = $pdo->prepare("SELECT blockchaindata FROM nodes WHERE blockchaindata != '' ORDER BY last_seen DESC");
         $result = $statement->execute();
         $e = $statement->fetch();
         echo($e[0]);

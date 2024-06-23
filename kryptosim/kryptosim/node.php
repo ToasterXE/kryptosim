@@ -35,24 +35,29 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
             $trans_id = $node['transaction_id'];
 
             if(isset($_POST['verify'])){
-                ?>
-                <p id="transaction_id"> <?php echo(sprintf("answer to node #{$id}: success"))?></p>
-                <?php
                 $statement = $pdo->prepare("UPDATE nodes SET transaction_id = 0 WHERE id = $id");
                 $result = $statement->execute();
-                $set = false;
-                $statement = $pdo->prepare("SELECT * FROM nodes WHERE id > $id and last_seen >= NOW() - INTERVAL 10 SECOND  and transaction_id = 0");
-                $result = $statement->execute();
-                $newnode = $statement->fetch();
-                if($newnode){
-                    $newid = $newnode['id'];
-                    $statement = $pdo->prepare("UPDATE nodes SET transaction_id = $trans_id WHERE id = $newid");
+                if($_POST['verify']){
+                    ?>
+                    <p id="transaction_id"> <?php echo(sprintf("answer to node #{$id}: success"))?>
+                    <?php
+                    $set = false;
+                    $statement = $pdo->prepare("SELECT * FROM nodes WHERE id > $id and last_seen >= NOW() - INTERVAL 10 SECOND  and transaction_id = 0");
                     $result = $statement->execute();
-                    $set = true;
-                }
-                if(!$set and $trans_id != 33){
-                    $statement = $pdo->prepare("UPDATE messages SET valid = 1 WHERE id = $trans_id");
-                    $result = $statement->execute();
+                    $newnode = $statement->fetch();
+                    if($newnode){
+                        $newid = $newnode['id'];
+                        $statement = $pdo->prepare("UPDATE nodes SET transaction_id = $trans_id WHERE id = $newid");
+                        $result = $statement->execute();
+                        $set = true;
+                        echo("sending transaction to next node");
+                    }
+                    if(!$set and $trans_id != 33){
+                        $statement = $pdo->prepare("UPDATE messages SET valid = 1 WHERE id = $trans_id");
+                        $result = $statement->execute();
+                        echo("transaction verified by network");
+                    }
+                    ?></p><?php
                 }
             }
 
@@ -71,10 +76,10 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
         if($node['block_id'] != 0){
             $blockid = $node['block_id'];
             if(isset($_POST['verifyblock'])){
+                $statement = $pdo->prepare("UPDATE nodes SET block_id = 0 WHERE id = $id");
+                $result = $statement->execute();
                 if($_POST['verifyblock']){
                     ?><p id="block_id"><?php
-                    $statement = $pdo->prepare("UPDATE nodes SET block_id = 0 WHERE id = $id");
-                    $result = $statement->execute();
                     $set = false;
                     $statement = $pdo->prepare("SELECT * FROM nodes WHERE id > $id and last_seen >= NOW() - INTERVAL 10 SECOND  and block_id = 0");
                     $result = $statement->execute();
@@ -90,7 +95,23 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
                         echo("answer to node #{$id}: block verified!");
                         $statement = $pdo->prepare("UPDATE blocks SET valid = 1 WHERE id = $blockid");
                         $result = $statement->execute();
+                        $statement = $pdo->prepare("SELECT t1_id, t2_id, t3_id FROM blocks WHERE id = $blockid");
+                        $result = $statement->execute();
+                        $t = $statement->fetch();
+                        $t1 = $t['t1_id'];
+                        $t2 = $t['t2_id'];
+                        $t3 = $t['t3_id'];
+                        $statement = $pdo->prepare("UPDATE messages SET block_id = $blockid WHERE id = $t1 OR id = $t2 OR id = $t3");
+                        $result = $statement->execute();
+
+
                     }
+                }
+                else{
+                    ?><p id="block_id"><?php
+                    echo("discarding block ".$blockid);
+                    $statement = $pdo->prepare("DELETE FROM blocks WHERE id = $blockid");
+                    $result = $statement->execute();
                 }
                 ?>
                     </p>
