@@ -23,7 +23,7 @@ int main(){
     hash256(data.begin(), data.end(), hash.begin(), hash.end());
 
     string hex_str = bytes_to_hex_string(hash.begin(), hash.end());
-    // cout<<hex_str<<"\n";
+    // cout<<hex_str<<"\n";w
     long long pow = 0;
     bool found = 0;
     cout<<"mining block"<<"\n";

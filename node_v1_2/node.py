@@ -48,7 +48,10 @@ def toStr(number):
     while i < length:
         code = number[i : i+3]
         i+=3
-        res += chr(int(code)-68)
+        if(int(code)-68 < 0):
+            res += chr(999)
+        else:
+            res += chr(int(code)-68)
     return res
 
 def verifyblock(blockdata, t1, t2, t3):

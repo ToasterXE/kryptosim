@@ -160,7 +160,7 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
                 $t2 = $block['t2_id'];
                 $t3 = $block['t3_id'];
                 echo("e".$t1);
-                $statement = $pdo->prepare("SELECT id, sender, receiver, text, date FROM messages WHERE id IN ($t1, $t2, $t3) ORDER BY id DESC");    
+                $statement = $pdo->prepare("SELECT id, sender, receiver, text, date FROM messages WHERE id IN ($t1, $t2, $t3) ORDER BY id ASC");    
                 $result = $statement->execute();
                 $count = 1;
                 while($t = $statement->fetch(PDO::FETCH_ASSOC)){
@@ -210,3 +210,16 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $us
 
 </body>
 </html>
+<?php
+    function updatebalance($sum, $key){
+        global $deltabalance;
+        if(array_key_exists($key, $deltabalance)){
+            $deltabalance[$key] += $sum;
+        }
+        else{
+            $deltabalance[$key] = $sum;
+        }
+        
+    }
+
+?>

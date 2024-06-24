@@ -1,13 +1,14 @@
 :root{
 
     --border_1: hsl(203, 42%, 50%);
-    --border_2: hsl(203, 72%, 72%);
-    --bg_hell: hsl(203, 42%, 29%);
-    --bg_heller: hsl(203, 42%, 19%);
-    --bg_dunkel: hsl(201, 44%, 6%);
-    --verifiedcol: hsl(140, 80%, 30%);
-    --titlecol: hsl(220, 63%, 61%);
-    --titlecol2: hsl(237, 60%, 50%);
+    --border_2: #84c4eb;
+    --bg_hell: #2b5169;
+    --bg_heller: #1c3545;
+    --bg_dunkel: #091116;
+    --verifiedcol: #0f8a38;
+    --titlecol: #5d87da;
+    --titlecol2: #333bcc;
+    --highlight: #c0a7f1;
 }
 
 .main{

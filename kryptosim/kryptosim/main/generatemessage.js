@@ -37,7 +37,8 @@ function copyhashtext(){
     else{
         var text = String(prevhash.value+t1.textContent+t2.textContent+t3.textContent+'{"receiver": "'+miner.value+'","text":"'+reward.value+'"}')
         console.log(text);
-        text = text.replace(/(\r\n|\n|\r\s|\s)/gm, '');
+        text = text.replace(/(\r\n|\n|\r\s|\s|\r)/gm, '');
+        // someText = someText.replace(/(\r\n|\n|\r)/gm, "");
         console.log(text);
 
         navigator.clipboard.writeText(text);

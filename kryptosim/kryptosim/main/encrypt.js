@@ -25,7 +25,7 @@ function encryptmessage(messageid = "message", keyid = "key", spaceid = "space",
     else{
         m_int = toNum(m);
         m_str = m_int.toString();
-        console.log(m_int);
+        // console.log(m_int);
         res_ee = "";
         for(let i = 0; i<m_str.length/9; i++){
             // console.log("e", pow(parseInt(m_str.slice(i*9,(i*9+8 > m_str.length ? m_str.length : i*9+9))), k, space));

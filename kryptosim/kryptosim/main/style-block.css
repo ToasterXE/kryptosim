@@ -5,7 +5,7 @@
     --bg_hell: hsl(203, 42%, 29%);
     --bg_heller: hsl(203, 42%, 19%);
     --bg_dunkel: hsl(201, 44%, 6%);
-    --verifiedcol: hsl(140, 80%, 30%);
+    --verifiedcol: #0f8a38;
 }
 
 .block{

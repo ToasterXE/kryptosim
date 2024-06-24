@@ -48,7 +48,10 @@ def toStr(number):
     while i < length:
         code = number[i : i+3]
         i+=3
-        res += chr(int(code)-68)
+        if(int(code)-68 < 0):
+            res += chr(999)
+        else:
+            res += chr(int(code)-68)
     return res
 
 def verifyblock(blockdata, t1, t2, t3):
@@ -64,6 +67,7 @@ def verifyblock(blockdata, t1, t2, t3):
     t3json = json.loads(t3)
 
     if(prevhash != blockjson['header']):
+        print("incorrect header")
         return 0
     string = prevhash+t1+t2+t3+'{"receiver": "'+ blockjson['miner']+'","text":"'+str(blockjson['reward'])+'->'+blockjson['miner']+'"}'+str(blockjson['pow'])
     string = string.replace("\'","\"")
@@ -71,10 +75,12 @@ def verifyblock(blockdata, t1, t2, t3):
     hash = (sha256(stringhash.encode('utf-8')).hexdigest())
     
     if(hash != blockjson['hash']):
+        print(hash, blockjson['hash'], stringhash)
         return 0
     
     for i in range(0,6):
         if(hash[i] != "0"):
+            print("invalid hash")
             return 0
     
     with open(file_path, 'a') as file:
