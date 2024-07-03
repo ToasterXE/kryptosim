@@ -4,7 +4,7 @@
 using namespace std;
 using namespace picosha2;
 
-const int numzeros = 6;
+const int numzeros = 3;
 
 bool test(string hex){
     for(int i = 0; i<numzeros; i++){

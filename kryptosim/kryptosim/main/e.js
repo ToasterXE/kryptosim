@@ -29,7 +29,7 @@ function copy(id){
 async function fixinput(event, keyid = "key", spaceid = "space"){
   try {
     event.preventDefault();
-    const clipboardContents = await navigator.clipboard.readText();
+    const clipboardContents = (await navigator.clipboard.readText()).trim();
     var currentfeld = document.getElementById(keyid);
     currentfeld.value = "";
     for (const item of clipboardContents) {

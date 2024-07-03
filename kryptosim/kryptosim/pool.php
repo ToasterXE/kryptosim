@@ -115,6 +115,20 @@ $sortby = isset($_GET['sort']) ? $_GET['sort'] : 0;
             <a href="/user"><button>profile</button></a>
 
         </div>
+
+        <?php if($_SESSION['userid'] != ""){
+            $statement = $pdo->prepare("SELECT private_key, public_key, key_n from benutzer WHERE id = :id");
+            $result = $statement->execute(array('id' => $_SESSION['userid']));
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            ?>
+        <div class="smallbox">
+            <p>public key:</p></p><button onclick="copy('pk')">copy</button>
+            <p class="w100" id="pk"><?php print($result['public_key']." ".$result['key_n']); ?>
+            <p>private key:</p><button onclick="copy('sk')">copy</button>
+            <p class="secret w100" id="sk"><?php print($result['private_key']." ".$result['key_n']); ?></p>
+        </div>
+        <?php } ?>
+
         <div class="search" style="width: 100%;">
             
             <div class="forms">
@@ -264,7 +278,7 @@ $sortby = isset($_GET['sort']) ? $_GET['sort'] : 0;
                 echo("Transactions waiting for block: ".count($block_wait));?></p><?php
                 if(count($block_wait)>= 3){
                     ?>  
-                    <form  method="post" action="block.php?t1=<?php print($block_wait[0])?>&t2=<?php print($block_wait[1])?>&t3=<?php print($block_wait[2])?>">
+                    <form  method="post" action="block.php?t1=<?php print($block_wait[count($block_wait)-1])?>&t2=<?php print($block_wait[count($block_wait)-2])?>&t3=<?php print($block_wait[count($block_wait)-3])?>">
                         <button type="submit" >create new block</button>
                     </form>
                     <?php
