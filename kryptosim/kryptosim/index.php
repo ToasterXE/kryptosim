@@ -133,6 +133,11 @@ $pdo = new PDO('mysql:host=db5014852654.hosting-data.io;dbname=dbs12339433', $na
             <p class="description">Programm, um den Proof of Work eines Blockes zu berechnen. <br> Anforderungen: Windows Rechner <br> Zu beachten ist, dass dieses Programm sehr aufwendige Berechnungen durchführt und sich dementsprechend auf die Systemressourcen auswirkt. </p>
         </div>
         </div>
+        <h2>documents</h2>
+        <div class="weblink">
+            <a href="/files/Ausarbeitung.pdf" download class="title">Ausarbeitung -></a>
+            <p class="description">Dies ist die Ausarbeitung zu dem Drehtürmodell 2023/24.</p>
+        </div>
 
     </body>
 </html>

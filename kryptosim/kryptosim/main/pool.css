@@ -1,0 +1,13 @@
+.main{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.message{
+    width: 50%;
+}
+
+.forms{
+    display: flex;
+    justify-content: space-around;
+}
